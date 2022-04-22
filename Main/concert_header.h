@@ -2,10 +2,13 @@
 //Ori Teicher 209279405
 
 /*Concert header*/
-
-
 #pragma once
+
+#include "main_header.h"
+
+
 /*Constants*/
+
 
 
 /*Structs*/
@@ -41,3 +44,5 @@ typedef struct
 } Concert;
 
 /*Function refrences*/
+Concert getConcert();
+int getConcertNameSize; 

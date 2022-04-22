@@ -9,24 +9,24 @@
 
 
 /*Structs*/
-typedef struct MusicianPriceInstrument
+typedef struct 
 {
 	unsigned short insId;
 	float price;
 }MPI;
 
-typedef struct ListNodeOfMPI
+typedef struct 
 {
 	MPI mpi_data;
 	MPI* next;
 }MPIListNode;
 
-typedef struct mpiList
+typedef struct 
 {
 	MPIListNode* head;
 	MPIListNode* tail;
 }MPIList;
-typedef struct musician
+typedef struct 
 {
 	char** name;
 	MPIList instruments;
