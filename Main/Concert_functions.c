@@ -23,9 +23,10 @@ void setConcertName(Concert* concert)
 {
 	char concert_name[NAME_SIZE];
 	printf("Enter concert name: ");
-	scanf("%s", &concert_name);
+	gets(concert_name);
 	int name_len = strlen(concert_name);
 	concert->name = (char*)malloc(name_len * sizeof(char));
+	checkMemoryAllocation(concert->name);
 	strcpy(concert->name, concert_name);
 }
 
@@ -33,7 +34,7 @@ void setConcertName(Concert* concert)
 void setConcertDate(Concert* concert)
 {
 	printf("Enter concert date: ");
-	scanf("%d%d%d",concert->date_of_concert.day , concert->date_of_concert.month, concert->date_of_concert.year);
+	scanf("%d %d %d",concert->date_of_concert.day , concert->date_of_concert.month, concert->date_of_concert.year);
 	printf("Enter concert hour: ");
 	char concert_hour[HOUR_SIZE];
 	scanf("%s", &concert_hour);
@@ -63,4 +64,14 @@ bool isDigit(char ch)
 		return true;
 	else
 		return false; 
+}
+
+// The fucntion checks if memory allocation succeeded. 
+void checkMemoryAllocation(void* ptr)
+{
+	if (ptr == NULL)
+	{
+		printf("Memory Allocation Failed! Ending program.");
+		exit(1);
+	}
 }
