@@ -3,6 +3,7 @@
 
 /*Instruments header*/
 
+#include "main_header.h"
 
 #pragma once
 /*Constants*/
@@ -21,4 +22,8 @@ typedef struct tree {
 } InstrumentTree;
 
 /*Function refrences*/
+TreeNode* createNewInstrument(char* name, unsigned short insID);
+void insertInstrumentToTree(InstrumentTree* instrument_tree, TreeNode* instrument);
+void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument);
+void buildInstrumentTree(InstrumentTree* instrument_tree, char** instruments, int instruments_size);
 int findInsId(InstrumentTree tree, char* instrument);
