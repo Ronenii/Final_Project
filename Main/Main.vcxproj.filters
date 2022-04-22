@@ -24,7 +24,7 @@
     <ClCompile Include="musician_functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="musician_header.c">
+    <ClCompile Include="musician_header.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="concert_functions.c">
