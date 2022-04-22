@@ -5,3 +5,8 @@
 
 
 /*Functions*/
+
+void test()
+{
+	printf("hi");
+}
