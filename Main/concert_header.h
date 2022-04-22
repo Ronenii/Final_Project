@@ -24,6 +24,17 @@ typedef struct
 
 typedef struct
 {
+	ConcertInstrument ci_data;
+	ConcertInstrument* next;
+}CINode;
+
+typedef struct
+{
+	ConcertInstrument* head;
+	ConcertInstrument* tail;
+}CIList;
+typedef struct
+{
 	Date date_of_concert;
 	char* name;
 	CIList instruments;
