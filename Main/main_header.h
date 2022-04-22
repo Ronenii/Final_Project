@@ -6,7 +6,7 @@
 
 #pragma once
 
-#define _CRT_SERCURE_NO_WARMINGS
+#define _CRT_SERCURE_NO_WARNINGS
 
 #include <stdio.h>
 #include <stdlib.h>

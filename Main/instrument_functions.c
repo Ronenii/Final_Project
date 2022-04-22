@@ -40,15 +40,12 @@ void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument
 	else if (*(current_tree_node->instrument) > *(instrument->instrument))
 		insertInstrumentToTreeRec(current_tree_node->left, instrument);
 
-	else //If the first letters match, runs through both strings until their chars at the char_index aren't equal
+	else //Compares between the first non-matching character using strcmp
 	{
-		int char_index = 0;
-		while (current_tree_node->instrument[char_index] == instrument->instrument[char_index])
-			char_index++;
-		if (current_tree_node->instrument[char_index] < instrument->instrument[char_index])
-			insertInstrumentToTreeRec(current_tree_node->right, instrument);
-		else
+		if (strcmp(current_tree_node->instrument, instrument->instrument) > 0)
 			insertInstrumentToTreeRec(current_tree_node->left, instrument);
+		else
+			insertInstrumentToTreeRec(current_tree_node->right, instrument);
 	}
 }
 
@@ -64,10 +61,22 @@ void buildInstrumentTree(InstrumentTree * instrument_tree,char ** instruments, i
 	}
 }
 
-
-
+//Runs through the tree using strcmp to find the matching given instrument. Returns it's ID.
+//o(n) = n (n is the the tree size)
 int findInsId(InstrumentTree tree, char* instrument)
 {
+	findInsIdRec(tree.root, instrument);
+}
 
+int findInsIdRec(TreeNode * current_tree_node, char* instrument)
+{
+	if (strcmp(current_tree_node->instrument, instrument) == 0) //Selection of where to send the instrument based on it's first letter
+		return current_tree_node->insId;
+
+	else if (strcmp(current_tree_node->instrument, instrument) > 0)
+		findInsIdRec(current_tree_node->left, instrument);
+
+	else //If the first letters match, runs through both strings until their chars at the char_index aren't equal
+		findInsIdRec(current_tree_node->right, instrument);
 }
 
