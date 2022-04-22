@@ -44,5 +44,9 @@ typedef struct
 } Concert;
 
 /*Function refrences*/
+
 Concert getConcert();
-int getConcertNameSize; 
+void setConcertName(Concert* concert);
+void setConcertDate(Concert* concert);
+float getHourFromString(char* hour_string);
+bool isDigit(char ch);
