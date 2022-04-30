@@ -2,12 +2,11 @@
 //Ori Teicher 209279405
 #include "concert_header.h"
 /*Concert functions*/
-#define NAME_SIZE 50
+#define NAME_SIZE 150
 #define HOUR_SIZE 6
 #define FLOAT_CAST 100.0
 #define HOUR_CALC 10
 /*Functions*/
-#pragma warning(disable:4996)
 
 // This fucntion gets a concert details from the user and returns him a matching concert due to his request. 
 Concert getConcert()
@@ -18,6 +17,7 @@ Concert getConcert()
 	return concert_res;
 }
 
+// This fucntion allocates memory for a new concert. 
 // This fucntion gets a concert and sets the concert's name due to the user's request.
 void setConcertName(Concert* concert)
 {
@@ -34,7 +34,7 @@ void setConcertName(Concert* concert)
 void setConcertDate(Concert* concert)
 {
 	printf("Enter concert date: ");
-	scanf("%d %d %d",concert->date_of_concert.day , concert->date_of_concert.month, concert->date_of_concert.year);
+	scanf("%d%d%d", &concert->date_of_concert.day, &concert->date_of_concert.year, &concert->date_of_concert.year);
 	printf("Enter concert hour: ");
 	char concert_hour[HOUR_SIZE];
 	scanf("%s", &concert_hour);

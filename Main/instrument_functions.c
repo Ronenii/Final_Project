@@ -14,7 +14,6 @@ TreeNode* createNewInstrument(char* name, unsigned short insID)
 	instrument->insId = insID;
 	instrument->instrument = name;
 	instrument->left = instrument->right = NULL;
-
 	return instrument;
 }
 

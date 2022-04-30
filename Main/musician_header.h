@@ -18,6 +18,7 @@ typedef struct
 typedef struct 
 {
 	MPI mpi_data;
+
 	MPI* next;
 }MPIListNode;
 
@@ -31,5 +32,4 @@ typedef struct
 	char** name;
 	MPIList instruments;
 }Musician;
-
 /*Function refrences*/
