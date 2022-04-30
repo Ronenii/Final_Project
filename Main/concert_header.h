@@ -49,3 +49,4 @@ void setConcertDate(Concert* concert);
 float getHourFromString(char* hour_string);
 bool isDigit(char ch);
 void checkMemoryAllocation(void* ptr);
+char* getString();

@@ -2,7 +2,6 @@
 //Ori Teicher 209279405
 
 /*Instrument functions*/
-
 #include "instrument_header.h"
 
 /*Functions*/
