@@ -2,11 +2,6 @@
 //Ori Teicher 209279405
 #include "concert_header.h"
 
-/*Constants Variables*/
-#define NAME_SIZE 150
-#define HOUR_SIZE 6
-#define FLOAT_CAST 100.0
-#define HOUR_CALC 10
 
 /*Concert functions*/
 

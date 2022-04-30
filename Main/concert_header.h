@@ -6,7 +6,10 @@
 #define _CRT_SECURE_NO_WARNINGS	
 #include "main_header.h"
 /*Constants*/
-
+#define NAME_SIZE 150
+#define HOUR_SIZE 6
+#define FLOAT_CAST 100.0
+#define HOUR_CALC 10
 
 
 /*Structs*/
@@ -42,7 +45,6 @@ typedef struct
 } Concert;
 
 /*Function refrences*/
-
 Concert getConcert();
 void setConcertName(Concert* concert);
 void setConcertDate(Concert* concert);
