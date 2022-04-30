@@ -27,3 +27,5 @@ void insertInstrumentToTree(InstrumentTree* instrument_tree, TreeNode* instrumen
 void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument);
 void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name);
 int findInsId(InstrumentTree tree, char* instrument);
+bool isInstrument(InstrumentTree tree, char* str);
+bool isInstrumentRec(TreeNode* current_tree_node, char* str);
