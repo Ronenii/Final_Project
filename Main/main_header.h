@@ -2,11 +2,9 @@
 //Ori Teicher 209279405
 
 /*Main header*/
-
-
 #pragma once
 
-#define _CRT_SERCURE_NO_WARNINGS
+#define _CRT_SERCURE_NO_WARMINGS
 
 #include <stdio.h>
 #include <stdlib.h>
