@@ -57,7 +57,7 @@ void buildInstrumentTree(InstrumentTree * instrument_tree,char * file_name)
 	TreeNode* new_instrument;
 	FILE* file = fopen(file_name, "r");
 	checkFileOpening(file);
-	char* instrument[INSTRUMENT_SIZE];
+	char* instrument[INSTRUMENT_NAME_SIZE];
 	int insID = 0;
 	while (true)
 	{
@@ -76,19 +76,43 @@ void buildInstrumentTree(InstrumentTree * instrument_tree,char * file_name)
 //o(n) = n (n is the the tree size)
 int findInsId(InstrumentTree tree, char* instrument)
 {
-	findInsIdRec(tree.root, instrument);
+	return indInsIdRec(tree.root, instrument);
 }
 
 int findInsIdRec(TreeNode * current_tree_node, char* instrument)
 {
-	if (strcmp(current_tree_node->instrument, instrument) == 0) //Selection of where to send the instrument based on it's first letter
+	if (strcmp(current_tree_node->instrument, instrument) == 0) 
 		return current_tree_node->insId;
 
+	//Compares the root and instrument and sends them left or right in the tree according to the lexicographical values
 	else if (strcmp(current_tree_node->instrument, instrument) > 0)
-		findInsIdRec(current_tree_node->left, instrument);
+		return findInsIdRec(current_tree_node->left, instrument);
 
-	else //If the first letters match, runs through both strings until their chars at the char_index aren't equal
-		findInsIdRec(current_tree_node->right, instrument);
+	else 
+		return findInsIdRec(current_tree_node->right, instrument);
+}
+
+//Returns boolean value dependant on if the given str is an instrument in the tree
+//o(n) = n (n is the tree size)
+bool isInstrument(InstrumentTree tree, char* str)
+{
+	if(!isEmptyInstrumentTree(tree))
+		return isInstrumentRec(tree.root, str);
+}
+
+bool isInstrumentRec(TreeNode* current_tree_node, char* str)
+{
+	if (strcmp(current_tree_node->instrument, str))
+		return true;
+	
+	//Compares the root and str and sends them left or right in the tree according to the lexicographical values
+	else if (strcmp(current_tree_node->instrument, str) > 0) 
+		return isInstrumentRec(current_tree_node->left, str);
+
+	else  if (strcmp(current_tree_node->instrument, str) < 0)
+		return isInstrumentRec(current_tree_node->right, str);
+	else //If the current_tree_node is NULL basically
+		return false;
 }
 
 //Checks if the tree is empty

@@ -16,7 +16,8 @@
 
 
 /*Consts*/
-#define INSTRUMENT_SIZE 150
+#define INSTRUMENT_NAME_SIZE 150
+#define	LINE_LENGTH 150
 
 /*Function refrences*/
 void checkMemoryAllocation(void* ptr);
