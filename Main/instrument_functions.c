@@ -10,7 +10,8 @@
 //Recieves a string and an int, assigns it to a new TreeNode and returns it.
 TreeNode* createNewInstrument(char* name, unsigned short insID)
 {
-	TreeNode* instrument = NULL;
+	TreeNode* instrument = (TreeNode*)malloc(sizeof(TreeNode));
+	checkMemoryAllocation(instrument);
 	instrument->insId = insID;
 	instrument->instrument = name;
 	instrument->left = instrument->right = NULL;
@@ -50,14 +51,24 @@ void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument
 
 //Recieves a string array(names of all instruments), creates a new tree node for each instrument and inserts it into the instrument tree
 //o(n) = n^2 (n is instruments_size)
-void buildInstrumentTree(InstrumentTree * instrument_tree,char ** instruments, int instruments_size)
+void buildInstrumentTree(InstrumentTree * instrument_tree,char * file_name)
 {
 	TreeNode* new_instrument;
-	for (int instrument_index = 0; instrument_index < instruments_size; instrument_index++)
+	FILE* file = fopen(file_name, "r");
+	checkFileOpening(file);
+	char* instrument[INSTRUMENT_SIZE];
+	int insID = 0;
+	while (true)
 	{
-		new_instrument = createNewInstrument(instruments[instrument_index], instrument_index); //the instrument is assigned a name and an id based on it's index in the list
+		fscanf(file, "%s", instrument);
+		if (feof(file))
+			break;
+		new_instrument = createNewInstrument(instrument, insID); //the instrument is assigned a name and an id based on it's index in the list
 		insertInstrumentToTree(instrument_tree, new_instrument);
+		insID++;
 	}
+
+	fclose(file);
 }
 
 //Runs through the tree using strcmp to find the matching given instrument. Returns it's ID.
@@ -77,5 +88,11 @@ int findInsIdRec(TreeNode * current_tree_node, char* instrument)
 
 	else //If the first letters match, runs through both strings until their chars at the char_index aren't equal
 		findInsIdRec(current_tree_node->right, instrument);
+}
+
+//Checks if the tree is empty
+bool isEmptyInstrumentTree(InstrumentTree t)
+{
+	return t.root == NULL;
 }
 
