@@ -2,8 +2,7 @@
 //Ori Teicher 209279405
 
 /*Main*/
-
 void main(int argc, char* argv[])
 {
-
+	
 }
