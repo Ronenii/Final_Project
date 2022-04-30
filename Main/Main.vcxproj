@@ -142,6 +142,7 @@
     <ClCompile Include="concert_functions.c" />
     <ClCompile Include="instrument_functions.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="main_functions.c" />
     <ClCompile Include="musician_functions.c" />
     <ClCompile Include="musician_header.h" />
   </ItemGroup>

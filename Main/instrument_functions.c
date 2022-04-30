@@ -10,7 +10,8 @@
 //Recieves a string and an int, assigns it to a new TreeNode and returns it.
 TreeNode* createNewInstrument(char* name, unsigned short insID)
 {
-	TreeNode* instrument = NULL;
+	TreeNode* instrument = (TreeNode*)malloc(sizeof(TreeNode));
+	checkMemoryAllocation(instrument);
 	instrument->insId = insID;
 	instrument->instrument = name;
 	instrument->left = instrument->right = NULL;
@@ -55,6 +56,7 @@ void buildInstrumentTree(InstrumentTree * instrument_tree,char * file_name)
 {
 	TreeNode* new_instrument;
 	FILE* file = fopen(file_name, "r");
+	checkFileOpening(file);
 	char* instrument[INSTRUMENT_SIZE];
 	int insID = 0;
 	while (true)
@@ -66,6 +68,8 @@ void buildInstrumentTree(InstrumentTree * instrument_tree,char * file_name)
 		insertInstrumentToTree(instrument_tree, new_instrument);
 		insID++;
 	}
+
+	fclose(file);
 }
 
 //Runs through the tree using strcmp to find the matching given instrument. Returns it's ID.
@@ -85,5 +89,11 @@ int findInsIdRec(TreeNode * current_tree_node, char* instrument)
 
 	else //If the first letters match, runs through both strings until their chars at the char_index aren't equal
 		findInsIdRec(current_tree_node->right, instrument);
+}
+
+//Checks if the tree is empty
+bool isEmptyInstrumentTree(InstrumentTree t)
+{
+	return t.root == NULL;
 }
 

@@ -30,6 +30,9 @@
     <ClCompile Include="concert_functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main_functions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_header.h">

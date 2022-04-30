@@ -17,3 +17,7 @@
 
 /*Consts*/
 #define INSTRUMENT_SIZE 150
+
+/*Function refrences*/
+void checkMemoryAllocation(void* ptr);
+void checkFileOpening(FILE* f);
