@@ -25,5 +25,5 @@ typedef struct tree {
 TreeNode* createNewInstrument(char* name, unsigned short insID);
 void insertInstrumentToTree(InstrumentTree* instrument_tree, TreeNode* instrument);
 void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument);
-void buildInstrumentTree(InstrumentTree* instrument_tree, char** instruments, int instruments_size);
+void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name);
 int findInsId(InstrumentTree tree, char* instrument);

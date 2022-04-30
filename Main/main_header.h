@@ -13,3 +13,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <string.h>
+
+
+/*Consts*/
+#define INSTRUMENT_SIZE 150
