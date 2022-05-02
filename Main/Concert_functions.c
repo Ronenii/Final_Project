@@ -187,11 +187,11 @@ void printConcertDetails(Concert concert)
 
 }
 
-// This fucntion prints the hour in an HH:MM format
+// This fucntion gets a float and prints the hour in an HH:MM format
 void printConcertHour(float time)
 {
 	int hour = (int)time;
-	int minutes = (int)((time * FLOAT_CAST)) - (int)(time);
-	printf("Concert hour : %d:%d", hour, minutes);
+	float minutes = (time - (int)(time)) * FLOAT_CAST;
+	printf("Concert hour : %.2d:%.2d", hour, (int)(ceil(minutes)));
 }
 
