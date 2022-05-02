@@ -26,31 +26,6 @@ void setConcertName(Concert* concert)
 	strcpy(concert->name, concert_name); // copy the new name into the concert struct. 
 }
 
-// The fucntion gets a string from the user and allocates memory due to the ammount of letters of the input untill \n is being inserted. 
-// O(n) - n is the string input length. 
-char* getString()
-{
-	int logSize = 0, phySize = 1;
-	char c;
-	char* string = (char*)malloc(sizeof(char) * phySize); // sets memory for first char. 
-	checkMemoryAllocation(string);
-	c = getchar();
-	while (c != '\n')
-	{
-		if (logSize == phySize)
-		{
-			phySize *= 2; // for realloc allocation the pyhsical size need to be multiplied by two. 
-			string = (char*)realloc(string, sizeof(char) * phySize);
-		}
-		string[logSize] = c;
-		logSize++;
-		c = getchar();
-	}
-	string[logSize] = '\0'; // end of string. 
-	return string;
-
-}
-
 // This fucntion gets a concert and sets the users date and hour request for the concert.
 void setConcertDate(Concert* concert)
 {
@@ -68,6 +43,45 @@ void setConcertDate(Concert* concert)
 // This fucntion gets a concert and sets the users requested instruments for the concert. 
 void setConcertInstruments(Concert* concert)
 {
+	CIList concert_instruments_list = createConcertInstrumentList();
+	char* instrument_name = getString();// get instruments from the user. 
+	ConcertInstrument concert_intrument;
+	setConcertInstrumentDetails(&concert_intrument);
+
+
+}
+
+// This fucntion sets the concert's instruments details from the user. 
+void setConcertInstrumentDetails(ConcertInstrument* concert_instrument)
+{
+	printf("Enter concert's details: ( amount, id, importance by '0'\\'1' : ");
+	scanf("%d%d%c", &concert_instrument->inst, &concert_instrument->num, concert_instrument->importance);
+}
+
+
+// The fucntion gets a string from the user and allocates memory due to the ammount of letters of the input untill \n is being inserted. 
+// O(n) - n is the string input length. 
+char* getString()
+{
+	int logSize = 0, phySize = 1;
+	char c;
+	char* string = (char*)malloc(sizeof(char) * phySize); // sets memory for first char. 
+	checkMemoryAllocation(string);
+	c = getchar();
+	while (c != '\n')
+	{
+		if (logSize == phySize)
+		{
+			phySize *= MEMORY_INCREASE; // for realloc allocation the pyhsical size need to be multiplied by two. 
+			string = (char*)realloc(string, sizeof(char) * phySize);
+			checkMemoryAllocation(string);
+		}
+		string[logSize] = c;
+		logSize++;
+		c = getchar();
+	}
+	string[logSize] = '\0'; // end of string. 
+	return string;
 
 }
 
@@ -126,7 +140,7 @@ bool checkEmptyList(CIList* instrument_list)
 		return false;
 }
 
-// This fucntion creates an empty ci list. 
+// This fucntion creates an empty concert instruments list. 
 void makeEmptyConcertInstrumentList(CIList* ci_list)
 {
 	ci_list->head = NULL;
@@ -137,6 +151,7 @@ void makeEmptyConcertInstrumentList(CIList* ci_list)
 void insertNodeToEndList(CIList* ci_list, ConcertInstrument data)
 {
 	CINode* ci_node = (CINode*)malloc(sizeof(CINode));
+	checkMemoryAllocation(ci_node);
 	ci_node->ci_data = data;
 	ci_node->next = NULL;
 	insertDataToEndList(ci_list, ci_node);
@@ -154,8 +169,29 @@ void insertDataToEndList(CIList* ci_list, CINode* new_ci_node)
 	}
 }
 
-
+// The function creates an instrument list due to the user's input
 CIList createConcertInstrumentList()
 {
 	/*creates a new list of instruments due to the users input*/
+	
 }
+
+// This fucntion prints entire concert details. 
+void printConcertDetails(Concert concert)
+{
+	printf("Concert name: ''%s''\n", concert.name);
+	printf("Concert date: %d %d %d\n", concert.date_of_concert.day,
+    concert.date_of_concert.hour, concert.date_of_concert.year);
+	printConcertHour(concert.date_of_concert.hour);
+	//print concert Musicians fucntion here (artist, artist instruments, price for playing on each instrument).
+
+}
+
+// This fucntion prints the hour in an HH:MM format
+void printConcertHour(float time)
+{
+	int hour = (int)time;
+	int minutes = (int)((time * FLOAT_CAST)) - (int)(time);
+	printf("Concert hour : %d:%d", hour, minutes);
+}
+

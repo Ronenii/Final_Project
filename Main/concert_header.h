@@ -10,9 +10,11 @@
 #define HOUR_SIZE 6
 #define FLOAT_CAST 100.0
 #define HOUR_CALC 10
+#define MEMORY_INCREASE 2
 
 
 /*Structs*/
+
 typedef struct
 {
 	int day, month, year;
@@ -44,7 +46,10 @@ typedef struct
 	CIList instruments;
 } Concert;
 
+
+
 /*Function refrences*/
+
 Concert getConcert();
 CIList createConcertInstrumentList();
 
@@ -63,3 +68,5 @@ void setConcertInstruments(Concert* concert);
 void checkMemoryAllocation(void* ptr);
 void setConcertDate(Concert* concert);
 void setConcertName(Concert* concert);
+void printConcertHour(float time);
+void printConcertDetails(Concert concert);
