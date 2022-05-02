@@ -22,7 +22,7 @@ typedef struct
 typedef struct
 {
 	int num;
-	int inst;
+	int inst;	
 	char importance;
 } ConcertInstrument;
 
@@ -34,8 +34,8 @@ typedef struct
 
 typedef struct
 {
-	ConcertInstrument* head;
-	ConcertInstrument* tail;
+	CINode* head;
+	CINode* tail;
 }CIList;
 typedef struct
 {
@@ -46,9 +46,20 @@ typedef struct
 
 /*Function refrences*/
 Concert getConcert();
-void setConcertName(Concert* concert);
-void setConcertDate(Concert* concert);
-float getHourFromString(char* hour_string);
+CIList createConcertInstrumentList();
+
 bool isDigit(char ch);
-void checkMemoryAllocation(void* ptr);
+bool checkEmptyList(CIList* instrument_list);
+bool checkIfMusicianExists();
+
 char* getString();
+
+float getHourFromString(char* hour_string);
+
+void insertDataToEndList(CIList* ci_list, CINode* new_ci_node);
+void insertNodeToEndList(CIList* ci_list, ConcertInstrument data);
+void makeEmptyConcertInstrumentList(CIList* ci_list);
+void setConcertInstruments(Concert* concert);
+void checkMemoryAllocation(void* ptr);
+void setConcertDate(Concert* concert);
+void setConcertName(Concert* concert);

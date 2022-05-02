@@ -2,7 +2,6 @@
 //Ori Teicher 209279405
 #include "concert_header.h"
 
-
 /*Concert functions*/
 
 // The function gets data for a concert from the user.
@@ -12,6 +11,7 @@ Concert getConcert()
 	Concert concert_res;
 	setConcertName(&concert_res); // sets the new name for the concert.
 	setConcertDate(&concert_res); // sets the date and hour for the concert. 
+	setConcertInstruments(&concert_res);
 	return concert_res;
 }
 
@@ -62,7 +62,13 @@ void setConcertDate(Concert* concert)
 	printf("Enter concert hour: ");
 	char* concert_hour;
 	concert_hour = getString();
-	concert->date_of_concert.hour = getHourFromString(concert_hour); 
+	concert->date_of_concert.hour = getHourFromString(concert_hour);
+}
+
+// This fucntion gets a concert and sets the users requested instruments for the concert. 
+void setConcertInstruments(Concert* concert)
+{
+
 }
 
 // The fucntion recieves a string in a form of an hour (for example : 20:30) and returns the string in a form of a float (in our example : 20.30) 
@@ -100,4 +106,56 @@ void checkMemoryAllocation(void* ptr)
 		printf("Memory Allocation Failed! Ending program.");
 		exit(1);
 	}
+}
+
+
+// This fucntion checks if a musician exists in the musician's array for the requested concert. 
+bool checkIfMusicianExists()
+{
+	bool check = false;
+	/*need to create musician array first then check if exists due to instruments*/
+	return check;
+}
+
+// This fucntion gets an instrument list and checks if its empty. 
+bool checkEmptyList(CIList* instrument_list)
+{
+	if (instrument_list->head == NULL && instrument_list->tail == NULL)
+		return true;
+	else
+		return false;
+}
+
+// This fucntion creates an empty ci list. 
+void makeEmptyConcertInstrumentList(CIList* ci_list)
+{
+	ci_list->head = NULL;
+	ci_list->tail = NULL;
+}
+
+// This fucntion inserts the CINode into the end of the list. 
+void insertNodeToEndList(CIList* ci_list, ConcertInstrument data)
+{
+	CINode* ci_node = (CINode*)malloc(sizeof(CINode));
+	ci_node->ci_data = data;
+	ci_node->next = NULL;
+	insertDataToEndList(ci_list, ci_node);
+}
+
+// This fucntion inserts the data of the CI_NODE to the end of the list
+void insertDataToEndList(CIList* ci_list, CINode* new_ci_node)
+{
+	if (checkEmptyList(ci_list))
+		makeEmptyConcertInstrumentList(ci_list);
+	else 
+	{
+		ci_list->tail->next = new_ci_node; 
+		ci_list->tail = new_ci_node;
+	}
+}
+
+
+CIList createConcertInstrumentList()
+{
+	/*creates a new list of instruments due to the users input*/
 }
