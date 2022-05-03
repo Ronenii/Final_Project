@@ -7,9 +7,9 @@
 void main(int argc, char* argv[])
 {
 	InstrumentTree instrument_tree;
-
+	Musician** musicians =NULL;
 	buildInstrumentTree(&instrument_tree, "instruments.txt");
-	printTree(instrument_tree);
+	GetMusiciansFromFile(musicians, "musicians.txt", instrument_tree);
 
 
 }
