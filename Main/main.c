@@ -9,7 +9,8 @@ void main(int argc, char* argv[])
 	InstrumentTree instrument_tree;
 
 	buildInstrumentTree(&instrument_tree, "instruments.txt");
-	printTree(instrument_tree);
 
+	Concert c1 = getConcert(instrument_tree);
+	printConcertDetails(c1);
 
 }

@@ -49,23 +49,22 @@ typedef struct
 
 /*Function refrences*/
 
-Concert getConcert();
+Concert getConcert(InstrumentTree instrument_tree); 
 CIList createConcertInstrumentList();
 
 bool isDigit(char ch);
 bool checkEmptyList(CIList* instrument_list);
-bool checkIfMusicianExists();
+bool checkIfMusicianExists(Musician** musicians_arr, int size_of_musician_arr, char* musician_name);
 
 char* getString();
 
 float getHourFromString(char* hour_string);
 
-void insertDataToEndList(CIList* ci_list, CINode* new_ci_node);
-void insertNodeToEndList(CIList* ci_list, ConcertInstrument data);
-void makeEmptyConcertInstrumentList(CIList* ci_list);
-void setConcertInstruments(Concert* concert);
+void insertCiDataToEndList(CIList* ci_list, CINode* new_ci_node);
+void insertCiNodeToEndList(CIList* ci_list, ConcertInstrument data);
 void setConcertDate(Concert* concert);
 void setConcertName(Concert* concert);
 void printConcertHour(float time);
 void printConcertDetails(Concert concert);
-void setConcertInstrumentDetails(ConcertInstrument* concert_instrument);
+void setConcertInstruments(Concert* concert, InstrumentTree instrument_tree);
+void setConcertInstrumentDetails(ConcertInstrument* concert_instrument, int instrument_id);
