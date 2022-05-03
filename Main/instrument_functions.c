@@ -31,7 +31,6 @@ void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument
 		current_tree_node = instrument;
 		return;
 	}
-
 	
 	if (*(current_tree_node->instrument) < *(instrument->instrument)) //Selection of where to send the instrument based on it's first letter
 		insertInstrumentToTreeRec(current_tree_node->right, instrument);

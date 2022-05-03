@@ -4,7 +4,7 @@
 /*Concert header*/
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS	
-#include "main_header.h"
+#include "musician_header.h"
 /*Constants*/
 #define NAME_SIZE 150
 #define HOUR_SIZE 6
