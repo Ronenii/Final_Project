@@ -23,9 +23,13 @@ typedef struct tree {
 
 /*Function refrences*/
 TreeNode* createNewInstrument(char* name, unsigned short insID);
-void insertInstrumentToTree(InstrumentTree* instrument_tree, TreeNode* instrument);
-void insertInstrumentToTreeRec(TreeNode* current_tree_node, TreeNode* instrument);
+void insertInstrumentToTree(InstrumentTree* instrument_tree, char* instrument, unsigned short insID);
+TreeNode* insertInstrumentToTreeRec(TreeNode* current_tree_node, char* instrument, unsigned short insID);
 void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name);
 int findInsId(InstrumentTree tree, char* instrument);
 bool isInstrument(InstrumentTree tree, char* str);
 bool isInstrumentRec(TreeNode* current_tree_node, char* str);
+//void printTree(InstrumentTree tree);
+//void printTreeRec(TreeNode* root);
+bool isEmptyInstrumentTree(InstrumentTree t);
+void createNewTree(InstrumentTree* tree);

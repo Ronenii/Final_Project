@@ -6,5 +6,10 @@
 /*Main*/
 void main(int argc, char* argv[])
 {
-	
+	InstrumentTree instrument_tree;
+
+	buildInstrumentTree(&instrument_tree, "instruments.txt");
+	printTree(instrument_tree);
+
+
 }

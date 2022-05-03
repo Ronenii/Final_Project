@@ -32,4 +32,6 @@ typedef struct
 	char** name;
 	MPIList instruments;
 }Musician;
+
 /*Function refrences*/
+Musician* getMusician(char* line, InstrumentTree tree);

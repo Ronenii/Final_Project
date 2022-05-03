@@ -58,33 +58,6 @@ void setConcertInstrumentDetails(ConcertInstrument* concert_instrument)
 	scanf("%d%d%c", &concert_instrument->inst, &concert_instrument->num, concert_instrument->importance);
 }
 
-
-// The fucntion gets a string from the user and allocates memory due to the ammount of letters of the input untill \n is being inserted. 
-// O(n) - n is the string input length. 
-char* getString()
-{
-	int logSize = 0, phySize = 1;
-	char c;
-	char* string = (char*)malloc(sizeof(char) * phySize); // sets memory for first char. 
-	checkMemoryAllocation(string);
-	c = getchar();
-	while (c != '\n')
-	{
-		if (logSize == phySize)
-		{
-			phySize *= MEMORY_INCREASE; // for realloc allocation the pyhsical size need to be multiplied by two. 
-			string = (char*)realloc(string, sizeof(char) * phySize);
-			checkMemoryAllocation(string);
-		}
-		string[logSize] = c;
-		logSize++;
-		c = getchar();
-	}
-	string[logSize] = '\0'; // end of string. 
-	return string;
-
-}
-
 // The fucntion recieves a string in a form of an hour (for example : 20:30) and returns the string in a form of a float (in our example : 20.30) 
 // O(n) - n is hour_string len (always 5 HH:MM format). 
 float getHourFromString(char* hour_string)
@@ -111,17 +84,6 @@ bool isDigit(char ch)
 	else
 		return false;
 }
-
-// The fucntion checks if memory allocation succeeded. 
-void checkMemoryAllocation(void* ptr)
-{
-	if (ptr == NULL)
-	{
-		printf("Memory Allocation Failed! Ending program.");
-		exit(1);
-	}
-}
-
 
 // This fucntion checks if a musician exists in the musician's array for the requested concert. 
 bool checkIfMusicianExists()

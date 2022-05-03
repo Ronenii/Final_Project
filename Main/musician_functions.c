@@ -36,7 +36,7 @@ Musician** GetMusiciansFromFile(char * file_name, InstrumentTree tree)
 //Recieves a text line and returns a musician pointer built from the values stored in it.
 Musician* getMusician(char* line, InstrumentTree tree)
 {
-	Musician* musician = (Musician*)malloc(sizeof(musician));
+	Musician* musician = (Musician*)malloc(sizeof(Musician));
 
 	return musician;
 }
