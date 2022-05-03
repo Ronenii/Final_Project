@@ -153,7 +153,12 @@ void printConcertDetails(Concert concert)
 void printConcertHour(float time)
 {
 	int hour = (int)time;
-	float minutes = (time - (int)(time)) * FLOAT_CAST;
-	printf("Concert hour : %.2d:%.2d", hour, (int)(ceil(minutes)));
+	float minutes = (time - hour) * FLOAT_CAST;
+	if (minutes < HOUR_CALC)
+		printf("Concert hour : %d:0%d", hour, (int)(minutes));
+	else
+		printf("Concert hour : %d:%d", hour, (int)(minutes));
 }
+
+
 
