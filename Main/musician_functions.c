@@ -8,18 +8,19 @@
 
 
 //Returns an array of pointers to musicians, built from the musicians text file.
-//o(n) = n^2(n is the number of musicians)
-void GetMusiciansFromFile(Musician**musicians, char * file_name, InstrumentTree tree)
+//o(n) = n^3(n is the music tree size\number of words in line\number of lines in the file)
+Musician** GetMusiciansFromFile( char * file_name, InstrumentTree tree)
 {
 	int physical_size=1, logical_size=0;
 	char* textLine[LINE_LENGTH];
 
 	FILE* file = fopen(file_name, "r");
-	musicians = (Musician**)malloc(sizeof(Musician*)*physical_size);
+	Musician** musicians = (Musician**)malloc(sizeof(Musician*)*physical_size);
 	checkMemoryAllocation(musicians);
-	fgets(textLine,LINE_LENGTH,file);
-	while (feof(file) == 0)
+	
+	while (!feof(file))
 	{
+		fgets(textLine, LINE_LENGTH, file);
 		musicians[logical_size] =getMusician(textLine,tree);
 		logical_size++;
 		if (logical_size == physical_size)
@@ -27,47 +28,43 @@ void GetMusiciansFromFile(Musician**musicians, char * file_name, InstrumentTree 
 			physical_size *= 2;
 			musicians = (Musician**)realloc(musicians, sizeof(Musician*) * physical_size);
 		}
-		fgets(textLine, LINE_LENGTH, file);
 	}
+	musicians = (Musician**)realloc(musicians, sizeof(Musician*) * logical_size);
 	fclose(file);
+	return musicians;
 }
 
 //Recieves a text line and returns a musician pointer built from the values stored in it.
-//o(n) = n^2 (n is the music tree size)
+//o(n) = n^2 (n is the music tree size\number of words in a text file line)
 Musician* getMusician(char* line, InstrumentTree tree)
 {
 	Musician* musician = (Musician*)malloc(sizeof(Musician));
 	MPIList instrument_list;
-	char *token, **name = (char**)malloc(LINE_LENGTH*sizeof(char*));
-	int InsID;
-	int name_index = 0;
+	char *token, **name = (char**)malloc(LINE_LENGTH*sizeof(char*)); //Given the maximum possible size for the array, will later realloc.
+	int InsID, name_index = 0;
 	createNewMPIList(&instrument_list);
 	
 	token = strtok(line, DELIMITERS);
 	while (token != NULL)
 	{
 		InsID = findInsId(tree, token);
-		if (InsID ==NOT_FOUND/*isInstrument(tree, token)*/ && token[0] != '\n')
+		if (InsID ==NOT_FOUND && token[0] != '\n') //If the string is not an instrument and not '\n' then it is a name
 			addStringToName(name, token, &name_index);
-		else if (InsID != NOT_FOUND)//So we won't insert \n as a string
+		else if (InsID != NOT_FOUND)//This is an else if and not an else in case the token is equal to '\n' so that w won't insert it
 		{
-			//InsID = findInsId(tree, token);
-			token = strtok(NULL, DELIMITERS);
+			token = strtok(NULL, DELIMITERS); //We have the id of the instrument and we know that after an instrument comes it's price. 
 			insertMPIDataToEndList(&instrument_list, InsID, token);
 		}
-			
-	
 	token = strtok(NULL, DELIMITERS);
 	}
-	name = (char**)realloc(name, sizeof(char*) * (name_index));
+	name = (char**)realloc(name, sizeof(char*) * (name_index)); //Name index also represents the number of words in the name
 	checkMemoryAllocation(name);
-	musician->name = name;
-	musician->instruments = instrument_list;
+	set_musician(musician, name, name_index, instrument_list);
 
 	return musician;
 }
 
-//Adds the given token into the name and adds a space for future words that will be added
+//Adds the given token (the name) into the string array
 void addStringToName(char** name, char* token, int * name_index)
 {
 	name[*name_index] = _strdup(token);
@@ -117,4 +114,27 @@ void insertMPIDataToEndList(MPIList* lst, unsigned short insID, char* price)
 
 }
 
+//Assigns all of the given musician's parameters based on the given data
+void set_musician(Musician * musician,char ** name, int name_length, MPIList instrument_list)
+{
+	musician->name = name;
+	musician->name_length = name_length;
+	musician->instruments = instrument_list;
+}
 
+//void printMusicians(Musician** musicians,int size)
+//{
+//	MPIListNode *ins_list_curr;
+//	for (int i = 0; i < size; i++)
+//	{
+//		for (int j = 0; j < musicians[i]->name_length; j++)
+//			printf("%s ", musicians[i]->name[j]);
+//		ins_list_curr = musicians[i]->instruments.head;
+//
+//		while (ins_list_curr != NULL)
+//		{
+//			printf("%d %f\n", ins_list_curr->mpi_data.insId, ins_list_curr->mpi_data.price);
+//			ins_list_curr = ins_list_curr->next;
+//		}
+//	}
+//}
