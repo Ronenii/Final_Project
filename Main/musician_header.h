@@ -31,15 +31,18 @@ typedef struct
 typedef struct 
 {
 	char** name;
+	int name_length;
 	MPIList instruments;
 }Musician;
 
 /*Function refrences*/
-void GetMusiciansFromFile(Musician** musicians, char* file_name, InstrumentTree tree);
+Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree);
 Musician* getMusician(char* line, InstrumentTree tree);
 void addStringToName(char** name, char* token, int* name_index);
 MPIListNode* createNewMPIListNode(MPIListNode* next, unsigned short insID, char* price);
 void createNewMPIList(MPIList* instruments);
 bool MPIListIsEmpty(MPIList* lst);
 void insertMPIDataToEndList(MPIList* lst, unsigned short insID, char* price);
+//void printMusicians(Musician** musicians, int size);
+void set_musician(Musician* musician, char** name, int name_length, MPIList instrument_list);
 

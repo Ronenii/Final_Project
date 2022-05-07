@@ -56,7 +56,7 @@ TreeNode* insertInstrumentToTreeRec(TreeNode* current_tree_node, char* instrumen
 }
 
 //Recieves a string array(names of all instruments), creates a new tree node for each instrument and inserts it into the instrument tree
-//o(n) = n^2 (n is instruments_size)
+//o(n) = n^2 (n is instruments_size\number of lines in the text file)
 void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name)
 {
 	createNewTree(instrument_tree);
@@ -64,12 +64,10 @@ void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name)
 	checkFileOpening(file);
 	char* instrument[INSTRUMENT_NAME_SIZE];
 	int insID = 0;
-	while (true)
+	while (!feof(file))
 	{
 		fscanf(file, "%s", instrument);
 		//fgets(instrument, INSTRUMENT_NAME_SIZE, file);
-		if (feof(file))
-			break;
 		insertInstrumentToTree(instrument_tree, instrument, insID);
 		insID++;
 	}
@@ -77,48 +75,28 @@ void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name)
 	fclose(file);
 }
 
-//Runs through the tree using strcmp to find the matching given instrument. Returns it's ID.
+//Runs through the tree using strcmp to find if the given string is in the tree.
+//If the instrument is found then it returns it's id, else returns -1.
 //o(n) = n (n is the the tree size)
-int findInsId(InstrumentTree tree, char* instrument)
+int findInsId(InstrumentTree tree, char* str)
 {
-	return findInsIdRec(tree.root, instrument);
+	return findInsIdRec(tree.root, str);
 }
 
-int findInsIdRec(TreeNode* current_tree_node, char* instrument)
+int findInsIdRec(TreeNode* current_tree_node, char* str)
 {
 	if (current_tree_node == NULL)
 		return -1;
 
-	if (strcmp(current_tree_node->instrument, instrument) == 0)
+	if (strcmp(current_tree_node->instrument, str) == 0)
 		return current_tree_node->insId;
 
 	//Compares the root and instrument and sends them left or right in the tree according to the lexicographical values
-	else if (strcmp(current_tree_node->instrument, instrument) > 0)
-		return findInsIdRec(current_tree_node->left, instrument);
+	else if (strcmp(current_tree_node->instrument, str) > 0)
+		return findInsIdRec(current_tree_node->left, str);
 
 	else
-		return findInsIdRec(current_tree_node->right, instrument);
-}
-
-//Returns boolean value dependant on if the given str is an instrument in the tree
-//o(n) = n (n is the tree size)
-bool isInstrument(InstrumentTree tree, char* str)
-{
-	if (!isEmptyInstrumentTree(tree))
-		return isInstrumentRec(tree.root, str);
-}
-
-bool isInstrumentRec(TreeNode* current_tree_node, char* str)
-{
-	if (current_tree_node == NULL)
-		return false;
-
-	else if (strcmp(current_tree_node->instrument, str) == 0)
-		return true;
-
-	else
-		return ((isInstrumentRec(current_tree_node->left, str)) || (isInstrumentRec(current_tree_node->right, str)));
-
+		return findInsIdRec(current_tree_node->right, str);
 }
 
 //void printTree(InstrumentTree tree)
