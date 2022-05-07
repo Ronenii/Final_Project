@@ -50,7 +50,7 @@ typedef struct
 /*Function refrences*/
 
 Concert getConcert(InstrumentTree instrument_tree); 
-CIList createConcertInstrumentList();
+void makeEmptyCiList();
 
 bool isDigit(char ch);
 bool checkEmptyList(CIList* instrument_list);
@@ -67,4 +67,4 @@ void setConcertName(Concert* concert);
 void printConcertHour(float time);
 void printConcertDetails(Concert concert);
 void setConcertInstruments(Concert* concert, InstrumentTree instrument_tree);
-void setConcertInstrumentDetails(ConcertInstrument* concert_instrument, int instrument_id);
+void setConcertInstrumentDetails(ConcertInstrument* concert_instrument, int instrument_id, CIList* ci_list);
