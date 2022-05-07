@@ -20,8 +20,8 @@ void setConcertName(Concert* concert)
 {
 	//printf("Enter concert name: ");
 	//char* concert_name = getString();
-	char concert_name = getString();
-	strtok(concert_name, DELIMITERS); 
+	char concert_name[LINE_LENGTH];
+	scanf("%s", &concert_name);
 	int name_len = strlen(concert_name); // get size of name to allocate memory later. 
 	concert->name = (char*)malloc(name_len * sizeof(char));
 	checkMemoryAllocation(concert->name);
