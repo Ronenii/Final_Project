@@ -125,9 +125,8 @@ Concert* GetConcert(InstrumentTree inst_tr)
 	char* concert_line = getString(); 
 	Concert* concert_res = (Concert*)malloc(sizeof(Concert));
 	checkMemoryAllocation(concert_res);
-	CIList ci_list;
-	makeEmptyCIList(&ci_list);
-	SetConcertDetails(concert_res, concert_line,inst_tr,&ci_list);
+	makeEmptyCIList(&(concert_res->instruments));
+	SetConcertDetails(concert_res, concert_line,inst_tr, &(concert_res->instruments));
 	return concert_res;
 }
 
