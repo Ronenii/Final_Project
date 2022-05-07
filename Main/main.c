@@ -13,6 +13,8 @@ void main(int argc, char* argv[])
 
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree,&musician_count);
 
+	Concert c1 = getConcert(instrument_tree);
+	printConcertDetails(c1);
 	freeMusicians(musicians,musician_count);
 	freeInstrumentTree(instrument_tree);
 }
