@@ -62,6 +62,5 @@ void insertCINodeToEndList(CIList* ci_list, CINode* new_ci_tail);
 void insertCIDataToEndList(CIList* ci_list, int id, int amount, char importance);
 void makeEmptyCIList(CIList* ci_list);
 void printConcertHour(float time);
-void printConcertDetails(Concert concert);
+void printConcertDetails(Concert* concert);
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list);
-void SetConcertInstrumentsDetails(Concert* concert, char* line, CIList* concert_inst_list, InstrumentTree tr);

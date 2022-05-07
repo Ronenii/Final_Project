@@ -71,8 +71,8 @@ void insertCINodeToEndList(CIList* ci_list, CINode* new_ci_tail)
 {
 	if (checkEmptyList(ci_list))
 	{
-		ci_list->head = NULL;
-		ci_list->tail = NULL;
+		ci_list->head = new_ci_tail;
+		ci_list->tail = new_ci_tail;
 	}
 	else
 	{
@@ -105,7 +105,6 @@ void printConcertDetails(Concert concert)
     concert.date_of_concert.month, concert.date_of_concert.year);
 	printConcertHour(concert.date_of_concert.hour);
 	//print concert Musicians fucntion here (artist, artist instruments, price for playing on each instrument).
-
 }
 
 
@@ -120,7 +119,7 @@ void printConcertHour(float time)
 		printf("Concert hour : %d:%d", hour, (int)(minutes));
 }
 
-
+// returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
 {
 	char* concert_line = getString(); 
@@ -128,16 +127,14 @@ Concert* GetConcert(InstrumentTree inst_tr)
 	checkMemoryAllocation(concert_res);
 	CIList ci_list;
 	makeEmptyCIList(&ci_list);
-	SetConcertDetails(&concert_res, concert_line,inst_tr,&ci_list);
-	concert_res->instruments = ci_list;
+	SetConcertDetails(concert_res, concert_line,inst_tr,&ci_list);
 	return concert_res;
-
 }
 
+// This fucntion sets the cocnert's details from the users cocnert input.
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list)
 {
-	CIList new_list;
-	makeEmptyCIList(&new_list);
+
 	char* instruments; int amount,id; char importance;
 	concert->name = strtok(line, SPACE);
 	concert->date_of_concert.day = atoi(strtok(NULL, SPACE));
@@ -152,7 +149,7 @@ void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIL
 
 	while (instruments != NULL)
 	{
-		insertCIDataToEndList(&new_list, id, amount, importance);
+		insertCIDataToEndList(inst_list, id, amount, importance);
 		instruments = strtok(NULL, SPACE);
 		if (instruments != NULL)
 		{
@@ -162,7 +159,7 @@ void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIL
 		}
 	}
 }
-//Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
+//input example: Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
 
 
 

@@ -13,7 +13,7 @@ void main(int argc, char* argv[])
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree,&musician_count);
 
 	Concert* c1 = GetConcert(instrument_tree);
-	//printConcertDetails(c1);
+	printConcertDetails(c1);
 
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree, &musician_count);
 
