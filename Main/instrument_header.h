@@ -31,3 +31,6 @@ int findInsId(InstrumentTree tree, char* str);
 //void printTreeRec(TreeNode* root);
 bool isEmptyInstrumentTree(InstrumentTree t);
 void createNewTree(InstrumentTree* tree);
+void freeInstrumentTree(InstrumentTree tree);
+void freeInstrumentTreeRec(TreeNode* node);
+void freeTreeNode(TreeNode* node);

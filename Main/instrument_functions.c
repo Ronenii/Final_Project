@@ -119,3 +119,27 @@ bool isEmptyInstrumentTree(InstrumentTree t)
 	return t.root == NULL;
 }
 
+//Frees the memory of the Instrument tree
+//o(n) = n (n is the size of the tree)
+void freeInstrumentTree(InstrumentTree tree)
+{
+	freeInstrumentTreeRec(tree.root);
+}
+
+void freeInstrumentTreeRec(TreeNode* node)
+{
+	if (node == NULL)
+		return;
+
+	freeInstrumentTreeRec(node->left);
+	freeInstrumentTreeRec(node->right);
+	freeTreeNode(node);
+}
+
+//Frees the given TreeNode's data
+void freeTreeNode(TreeNode* node)
+{
+	free(node->instrument);
+	free(node);
+}
+

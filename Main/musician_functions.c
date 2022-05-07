@@ -8,8 +8,8 @@
 
 
 //Returns an array of pointers to musicians, built from the musicians text file.
-//o(n) = n^3(n is the music tree size\number of words in line\number of lines in the file)
-Musician** GetMusiciansFromFile( char * file_name, InstrumentTree tree)
+//o(n) = n^3 (n is the music tree size\number of words in line\number of lines in the file)
+Musician** GetMusiciansFromFile( char * file_name, InstrumentTree tree,int* count)
 {
 	int physical_size=1, logical_size=0;
 	char* textLine[LINE_LENGTH];
@@ -30,6 +30,7 @@ Musician** GetMusiciansFromFile( char * file_name, InstrumentTree tree)
 		}
 	}
 	musicians = (Musician**)realloc(musicians, sizeof(Musician*) * logical_size);
+	*count = logical_size;
 	fclose(file);
 	return musicians;
 }
@@ -39,6 +40,7 @@ Musician** GetMusiciansFromFile( char * file_name, InstrumentTree tree)
 Musician* getMusician(char* line, InstrumentTree tree)
 {
 	Musician* musician = (Musician*)malloc(sizeof(Musician));
+	checkMemoryAllocation(musician);
 	MPIList instrument_list;
 	char *token, **name = (char**)malloc(LINE_LENGTH*sizeof(char*)); //Given the maximum possible size for the array, will later realloc.
 	int InsID, name_index = 0;
@@ -120,6 +122,46 @@ void set_musician(Musician * musician,char ** name, int name_length, MPIList ins
 	musician->name = name;
 	musician->name_length = name_length;
 	musician->instruments = instrument_list;
+}
+
+//Frees the musicians pointer array
+//o(n) = n^2 (n is the musician size/name array size/Instrument list size
+void freeMusicians(Musician** musicians,int musicians_size)
+{
+	for (int i = 0; i < musicians_size; i++)
+		freeMusician(musicians[i]);
+	free(musicians);
+}
+
+//Frees the musician pointer
+//o(n) =  n (n is thee name array size/Instrument list size)
+void freeMusician(Musician* musician)
+{
+	freeName(musician->name, musician->name_length);
+	freeMPIList(musician->instruments);
+}
+
+//Frees the name array
+//o(n) =  n (n is the name array size)
+void freeName(char** name,int name_size)
+{
+	for (int i = 0; i < name_size; i++)
+		free(name[i]);
+	free(name);
+}
+
+//Frees the instrument list]
+//o(n) = n (n is the instrument list size)
+void freeMPIList(MPIList instrument_list)
+{
+	MPIListNode *del, * curr = instrument_list.head;
+
+	while (curr != NULL)
+	{
+		del = curr;
+		curr = curr->next;
+		free(del);
+	}
 }
 
 //void printMusicians(Musician** musicians,int size)
