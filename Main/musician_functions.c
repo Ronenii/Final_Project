@@ -38,28 +38,28 @@ Musician* getMusician(char* line, InstrumentTree tree)
 {
 	Musician* musician = (Musician*)malloc(sizeof(Musician));
 	MPIList instrument_list;
-	char *token, *name = (char*)malloc(LINE_LENGTH*sizeof(char));
-	unsigned short InsID;
+	char *token, **name = (char**)malloc(LINE_LENGTH*sizeof(char*));
+	int InsID;
+	int name_index = 0;
 	createNewMPIList(&instrument_list);
-	name[0] = '\0'; //So that it will be considered an ampty string to which we can concatenate words
 	
 	token = strtok(line, DELIMITERS);
 	while (token != NULL)
 	{
-		if (isInstrument(tree, token))
+		InsID = findInsId(tree, token);
+		if (InsID ==NOT_FOUND/*isInstrument(tree, token)*/ && token[0] != '\n')
+			addStringToName(name, token, &name_index);
+		else if (InsID != NOT_FOUND)//So we won't insert \n as a string
 		{
-			InsID = findInsId(tree, token);
+			//InsID = findInsId(tree, token);
 			token = strtok(NULL, DELIMITERS);
 			insertMPIDataToEndList(&instrument_list, InsID, token);
 		}
-		else if(token[0] != '\n')//So we won't insert \n as a string
-			addStringToName(name, token);
+			
 	
 	token = strtok(NULL, DELIMITERS);
 	}
-
-	name[strlen(name)-1] = '\0';//To remove the last space in the name added in addStringToName
-	name = (char*)realloc(name, sizeof(char) * (strlen(name) + 1));
+	name = (char**)realloc(name, sizeof(char*) * (name_index));
 	checkMemoryAllocation(name);
 	musician->name = name;
 	musician->instruments = instrument_list;
@@ -68,10 +68,10 @@ Musician* getMusician(char* line, InstrumentTree tree)
 }
 
 //Adds the given token into the name and adds a space for future words that will be added
-void addStringToName(char* name, char* token)
+void addStringToName(char** name, char* token, int * name_index)
 {
-	strcat(name, token);
-	strcat(name, " ");
+	name[*name_index] = _strdup(token);
+	(*name_index)++;
 }
 
 //Creates a new empty MPIList

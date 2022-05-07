@@ -86,6 +86,9 @@ int findInsId(InstrumentTree tree, char* instrument)
 
 int findInsIdRec(TreeNode* current_tree_node, char* instrument)
 {
+	if (current_tree_node == NULL)
+		return -1;
+
 	if (strcmp(current_tree_node->instrument, instrument) == 0)
 		return current_tree_node->insId;
 

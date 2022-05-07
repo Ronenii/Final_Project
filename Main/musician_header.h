@@ -37,7 +37,7 @@ typedef struct
 /*Function refrences*/
 void GetMusiciansFromFile(Musician** musicians, char* file_name, InstrumentTree tree);
 Musician* getMusician(char* line, InstrumentTree tree);
-void addStringToName(char* name, char* token);
+void addStringToName(char** name, char* token, int* name_index);
 MPIListNode* createNewMPIListNode(MPIListNode* next, unsigned short insID, char* price);
 void createNewMPIList(MPIList* instruments);
 bool MPIListIsEmpty(MPIList* lst);

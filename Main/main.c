@@ -10,5 +10,5 @@ void main(int argc, char* argv[])
 	Musician** musicians =NULL;
 	buildInstrumentTree(&instrument_tree, "instruments.txt");
 
-
+	GetMusiciansFromFile(musicians, "musicians.txt", instrument_tree);
 }

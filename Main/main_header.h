@@ -18,6 +18,7 @@
 #define	LINE_LENGTH 150
 #define DELIMITERS " ,.;:?!-\t'()[]{}<>~_"
 #define NUMBERS "0123456789\\n"
+#define NOT_FOUND -1
 
 /*Function refrences*/
 void checkMemoryAllocation(void* ptr);
