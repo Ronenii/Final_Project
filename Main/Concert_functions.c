@@ -18,8 +18,10 @@ Concert getConcert(InstrumentTree instrument_tree)
 // This fucntion gets a concert and sets the concert's name due to the user's request.
 void setConcertName(Concert* concert)
 {
-	printf("Enter concert name: ");
-	char* concert_name = getString();
+	//printf("Enter concert name: ");
+	//char* concert_name = getString();
+	char concert_name = getString();
+	strtok(concert_name, DELIMITERS); 
 	int name_len = strlen(concert_name); // get size of name to allocate memory later. 
 	concert->name = (char*)malloc(name_len * sizeof(char));
 	checkMemoryAllocation(concert->name);
@@ -30,24 +32,25 @@ void setConcertName(Concert* concert)
 void setConcertDate(Concert* concert)
 {
 	char flush;
-	printf("Enter concert date: ");
+	//printf("Enter concert date: ");
 	scanf("%d%d%d", &concert->date_of_concert.day, &concert->date_of_concert.month, &concert->date_of_concert.year);
 
 	flush = getchar(); // in order to not include the '\n' from before. 
-	printf("Enter concert hour: ");
+	//printf("Enter concert hour: ");
 	char* concert_hour;
 	concert_hour = getString();
+	strtok(concert_hour,SPACE);
 	concert->date_of_concert.hour = getHourFromString(concert_hour);
 }
 
 // This fucntion gets a concert and sets the users requested instruments for the concert. 
 void setConcertInstruments(Concert* concert, InstrumentTree instrument_tree)
 {
-	printf("Enter instrument name : ");
+	//printf("Enter instrument name : ");
 	char* instrument_name = getString();// get instruments from the user. 
 	int instrument_id = findInsId(instrument_tree, instrument_name);// finds the id in the tree.
 	CIList ci_list; 
-	makeEmptyCiList(&ci_list);
+	makeEmptyCIList(&ci_list);
 	ConcertInstrument concert_intrument;
 	setConcertInstrumentDetails(&concert_intrument,instrument_id,&ci_list);
 }
@@ -58,9 +61,9 @@ void setConcertInstruments(Concert* concert, InstrumentTree instrument_tree)
 void setConcertInstrumentDetails(ConcertInstrument* concert_instrument, int instrument_id,CIList* ci_list)
 {
 	concert_instrument->inst = instrument_id;
-	printf("Enter concert's details: ( amount, importance by '0'\'1' : ");
+	//printf("Enter concert's details: ( amount, importance by '0'\'1' : ");
 	scanf("%d %c", &concert_instrument->num, &concert_instrument->importance);
-	insertCiNodeToEndList(ci_list, *concert_instrument);
+	insertCINodeToEndList(ci_list, *concert_instrument);
 }
 
 // The fucntion recieves a string in a form of an hour (for example : 20:30) and returns the string in a form of a float (in our example : 20.30) 
@@ -113,7 +116,7 @@ bool checkEmptyList(CIList* instrument_list)
 }
 
  // This function returns a new concert instrument list node. 
-CINode* createNewCiListNode(ConcertInstrument ci_data, CINode* next)
+CINode* createNewCIListNode(ConcertInstrument ci_data, CINode* next)
 {
 	CINode* new_ci_node; 
 	new_ci_node = (CINode*)malloc(sizeof(CINode));
@@ -124,19 +127,19 @@ CINode* createNewCiListNode(ConcertInstrument ci_data, CINode* next)
 }
 
 // This fucntion inserts the CINode into the end of the list. 
-void insertCiNodeToEndList(CIList* ci_list, ConcertInstrument data)
+void insertCINodeToEndList(CIList* ci_list, ConcertInstrument data)
 {
 	CINode* ci_node = (CINode*)malloc(sizeof(CINode));
 	checkMemoryAllocation(ci_node);
 	ci_node->ci_data = data;
 	ci_node->next = NULL;
-	insertCiDataToEndList(ci_list, ci_node);
+	insertCIDataToEndList(ci_list, ci_node);
 }
 
 
 
 // This fucntion inserts the data of the CI_NODE to the end of the list
-void insertCiDataToEndList(CIList* ci_list, CINode* new_ci_node)
+void insertCIDataToEndList(CIList* ci_list, CINode* new_ci_node)
 {
 	if (checkEmptyList(ci_list))
 	{
@@ -151,7 +154,7 @@ void insertCiDataToEndList(CIList* ci_list, CINode* new_ci_node)
 }
 
 // The function creates an instrument list due to the user's input
-void makeEmptyCiList(CIList* ci_list)
+void makeEmptyCIList(CIList* ci_list)
 {
 	ci_list->head = NULL;
 	ci_list->tail = NULL;
