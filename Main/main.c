@@ -12,8 +12,8 @@ void main(int argc, char* argv[])
 	buildInstrumentTree(&instrument_tree, "instruments.txt");
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree,&musician_count);
 
-	Concert c1 = getConcert(instrument_tree);
-	printConcertDetails(c1);
+	Concert* c1 = GetConcert(instrument_tree);
+	//printConcertDetails(c1);
 
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree, &musician_count);
 
