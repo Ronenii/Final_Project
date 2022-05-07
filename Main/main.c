@@ -10,11 +10,13 @@ void main(int argc, char* argv[])
 	InstrumentTree instrument_tree;
 	Musician** musicians =NULL;
 	buildInstrumentTree(&instrument_tree, "instruments.txt");
-
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree,&musician_count);
 
 	Concert c1 = getConcert(instrument_tree);
 	printConcertDetails(c1);
-	freeMusicians(musicians,musician_count);
+
+	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree, &musician_count);
+
+	freeMusicians(musicians, musician_count);
 	freeInstrumentTree(instrument_tree);
 }
