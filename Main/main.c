@@ -12,5 +12,5 @@ void main(int argc, char* argv[])
 
 	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree);
 
-	printMusicians(musicians, 7);
+
 }
