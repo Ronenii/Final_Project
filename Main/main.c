@@ -8,13 +8,12 @@ void main(int argc, char* argv[])
 {
 	int musician_count, instrument_count;
 	InstrumentTree instrument_tree;
-	buildInstrumentTree(&instrument_tree, "instruments.txt", instrument_count);
-	Musician** MusiciansGroup =NULL, *** MusiciansCollection = NULL;
+	buildInstrumentTree(&instrument_tree, "instruments.txt", &instrument_count);
+	Musician** MusiciansGroup, *** MusiciansCollection;
 	MusiciansGroup = GetMusiciansFromFile("musicians.txt", instrument_tree,&musician_count);
-
+	MusiciansCollection = createMusiciansCollection(MusiciansGroup, instrument_count, musician_count);
 
 	Concert* concert_input = GetConcert(instrument_tree);
-	printConcertDetails(concert_input);
 
 	freeConcert(concert_input);
 	freeMusicians(MusiciansGroup, musician_count);

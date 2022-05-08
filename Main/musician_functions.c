@@ -5,6 +5,17 @@
 #include "musician_header.h"
 
 /*Functions*/
+Musician*** createMusiciansCollection(Musician** MusicianGroup, int size, int musician_count)
+{
+	Musician*** MusicianCollection = (Musician***)malloc(sizeof(Musician**) * size);
+	checkMemoryAllocation(MusicianCollection);
+	for (int instrument_index = 0; instrument_index < size; instrument_index++)
+	{
+		MusicianCollection[instrument_index] = getMusiciansByInstrument(MusicianGroup, musician_count, instrument_index);
+	}
+
+	return MusicianCollection;
+}
 
 
 //Returns an array of pointers to musicians, built from the musicians text file.
@@ -32,6 +43,34 @@ Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count
 	*count = logical_size;
 	fclose(file);
 	return musicians;
+}
+
+Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID)
+{
+	int playing_musicians = 0;
+	Musician** MusiciansByInstruments = (Musician**)malloc(sizeof(Musician*)*musician_count);
+	checkMemoryAllocation(MusiciansByInstruments);
+	for (int musician_pindex = 0; musician_pindex < musician_count; musician_pindex++)
+	{
+		if (playsInstrument(MusicianGroup[musician_pindex], insID))
+			MusiciansByInstruments[playing_musicians++] = MusicianGroup[musician_pindex];
+	}
+	MusiciansByInstruments = (Musician**)realloc(MusiciansByInstruments, sizeof(Musician**)*playing_musicians);
+
+	return MusiciansByInstruments;
+}
+
+bool playsInstrument(Musician* musician, int insID)
+{
+	MPIListNode* curr = musician->instruments.head;
+	
+	while (curr != NULL)
+	{
+		if (insID == curr->mpi_data.insId)
+			return true;
+		curr = curr->next;
+	}
+	return false;
 }
 
 //Recieves a text line and returns a musician pointer built from the values stored in it.

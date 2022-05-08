@@ -72,7 +72,7 @@ void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name, int *
 		insertInstrumentToTree(instrument_tree, instrument, insID);
 		insID++;
 	}
-	(*instrument_count) = insID + 1;
+	(*instrument_count) = insID;
 	fclose(file);
 }
 

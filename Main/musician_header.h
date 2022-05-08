@@ -36,6 +36,9 @@ typedef struct
 }Musician;
 
 /*Function refrences*/
+Musician*** createMusiciansCollection(Musician** MusicianGroup, int size, int musician_count);
+Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID);
+bool playsInstrument(Musician* musician, int insID);
 Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count);
 Musician* getMusician(char* line, InstrumentTree tree);
 void addStringToName(char** name, char* token, int* name_index);
