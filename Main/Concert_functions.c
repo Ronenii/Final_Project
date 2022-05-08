@@ -165,6 +165,28 @@ void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIL
 		}
 	}
 }
+
+// The fucntion releases the concert instrument list from memory
+// O(n) - n is list length.
+void freeCIList(CIList instruments_list)
+{
+	CINode* curr, * prev;
+	curr = instruments_list.head;
+	while (curr != NULL)
+	{
+		prev = curr;
+		curr = curr->next;
+		free(prev);
+	}
+}
+
+// This fucntion realeases a cocnert from memory.
+void freeConcert(Concert* concert)
+{
+	freeCIList(concert->instruments);
+	free(concert->name);
+	free(concert);
+}
 //input example: Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
 
 

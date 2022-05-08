@@ -64,3 +64,5 @@ void makeEmptyCIList(CIList* ci_list);
 //void printConcertHour(float time);
 //void printConcertDetails(Concert* concert);
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list);
+void freeCIList(CIList instruments_list);
+void freeConcert(Concert* concert);

@@ -58,7 +58,7 @@ TreeNode* insertInstrumentToTreeRec(TreeNode* current_tree_node, char* instrumen
 
 //Recieves a string array(names of all instruments), creates a new tree node for each instrument and inserts it into the instrument tree
 //o(n) = n^2 (n is instruments_size\number of lines in the text file)
-void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name)
+void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name, int * instrument_count)
 {
 	createNewTree(instrument_tree);
 	FILE* file = fopen(file_name, "r");
@@ -72,7 +72,7 @@ void buildInstrumentTree(InstrumentTree* instrument_tree, char* file_name)
 		insertInstrumentToTree(instrument_tree, instrument, insID);
 		insID++;
 	}
-
+	(*instrument_count) = insID + 1;
 	fclose(file);
 }
 
