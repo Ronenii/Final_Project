@@ -9,20 +9,19 @@
 
 //Returns an array of pointers to musicians, built from the musicians text file.
 //o(n) = n^3 (n is the music tree size\number of words in line\number of lines in the file)
-Musician** GetMusiciansFromFile( char * file_name, InstrumentTree tree,int* count)
+Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count)
 {
-	int physical_size=1, logical_size=0;
+	int physical_size = 1, logical_size = 0;
 	char* textLine[LINE_LENGTH];
 
 	FILE* file = fopen(file_name, "r");
-	Musician** musicians = (Musician**)malloc(sizeof(Musician*)*physical_size);
+	Musician** musicians = (Musician**)malloc(sizeof(Musician*) * physical_size);
 	checkMemoryAllocation(musicians);
-	
+
 	while (!feof(file))
 	{
 		fgets(textLine, LINE_LENGTH, file);
-		musicians[logical_size] =getMusician(textLine,tree);
-		logical_size++;
+		musicians[logical_size++] = getMusician(textLine, tree);
 		if (logical_size == physical_size)
 		{
 			physical_size *= 2;
@@ -42,22 +41,22 @@ Musician* getMusician(char* line, InstrumentTree tree)
 	Musician* musician = (Musician*)malloc(sizeof(Musician));
 	checkMemoryAllocation(musician);
 	MPIList instrument_list;
-	char *token, **name = (char**)malloc(LINE_LENGTH*sizeof(char*)); //Given the maximum possible size for the array, will later realloc.
+	char* token, ** name = (char**)malloc(LINE_LENGTH * sizeof(char*)); //Given the maximum possible size for the array, will later realloc.
 	int InsID, name_index = 0;
 	createNewMPIList(&instrument_list);
-	
+
 	token = strtok(line, DELIMITERS);
 	while (token != NULL)
 	{
 		InsID = findInsId(tree, token);
-		if (InsID ==NOT_FOUND && token[0] != '\n') //If the string is not an instrument and not '\n' then it is a name
+		if (InsID == NOT_FOUND && token[0] != '\n') //If the string is not an instrument and not '\n' then it is a name
 			addStringToName(name, token, &name_index);
 		else if (InsID != NOT_FOUND)//This is an else if and not an else in case the token is equal to '\n' so that w won't insert it
 		{
 			token = strtok(NULL, DELIMITERS); //We have the id of the instrument and we know that after an instrument comes it's price. 
 			insertMPIDataToEndList(&instrument_list, InsID, token);
 		}
-	token = strtok(NULL, DELIMITERS);
+		token = strtok(NULL, DELIMITERS);
 	}
 	name = (char**)realloc(name, sizeof(char*) * (name_index)); //Name index also represents the number of words in the name
 	checkMemoryAllocation(name);
@@ -67,9 +66,10 @@ Musician* getMusician(char* line, InstrumentTree tree)
 }
 
 //Adds the given token (the name) into the string array
-void addStringToName(char** name, char* token, int * name_index)
+void addStringToName(char** name, char* token, int* name_index)
 {
 	name[*name_index] = _strdup(token);
+	checkMemoryAllocation(name[*name_index]);
 	(*name_index)++;
 }
 
@@ -80,11 +80,11 @@ void createNewMPIList(MPIList* instruments)
 }
 
 //Creates a new LMPIListNode and assigns it the given values
-MPIListNode* createNewMPIListNode(MPIListNode*next,unsigned short insID,char*price)
+MPIListNode* createNewMPIListNode(MPIListNode* next, unsigned short insID, char* price)
 {
 	MPIListNode* ListNode = (MPIListNode*)malloc(sizeof(MPIListNode));
 	checkMemoryAllocation(ListNode);
-	
+
 	ListNode->mpi_data.insId = insID;
 	ListNode->mpi_data.price = (float)atof(price);
 	ListNode->next = next;
@@ -103,7 +103,7 @@ void insertMPIDataToEndList(MPIList* lst, unsigned short insID, char* price)
 
 	if (MPIListIsEmpty(lst))
 	{
-		new_node = createNewMPIListNode(NULL, insID,price);
+		new_node = createNewMPIListNode(NULL, insID, price);
 		lst->tail = lst->head = new_node;
 	}
 
@@ -117,7 +117,7 @@ void insertMPIDataToEndList(MPIList* lst, unsigned short insID, char* price)
 }
 
 //Assigns all of the given musician's parameters based on the given data
-void set_musician(Musician * musician,char ** name, int name_length, MPIList instrument_list)
+void set_musician(Musician* musician, char** name, int name_length, MPIList instrument_list)
 {
 	musician->name = name;
 	musician->name_length = name_length;
@@ -126,7 +126,7 @@ void set_musician(Musician * musician,char ** name, int name_length, MPIList ins
 
 //Frees the musicians pointer array
 //o(n) = n^2 (n is the musician size/name array size/Instrument list size
-void freeMusicians(Musician** musicians,int musicians_size)
+void freeMusicians(Musician** musicians, int musicians_size)
 {
 	for (int i = 0; i < musicians_size; i++)
 		freeMusician(musicians[i]);
@@ -143,7 +143,7 @@ void freeMusician(Musician* musician)
 
 //Frees the name array
 //o(n) =  n (n is the name array size)
-void freeName(char** name,int name_size)
+void freeName(char** name, int name_size)
 {
 	for (int i = 0; i < name_size; i++)
 		free(name[i]);
@@ -154,7 +154,7 @@ void freeName(char** name,int name_size)
 //o(n) = n (n is the instrument list size)
 void freeMPIList(MPIList instrument_list)
 {
-	MPIListNode *del, * curr = instrument_list.head;
+	MPIListNode* del, * curr = instrument_list.head;
 
 	while (curr != NULL)
 	{

@@ -61,6 +61,6 @@ float getHourFromString(char* hour_string);
 void insertCINodeToEndList(CIList* ci_list, CINode* new_ci_tail);
 void insertCIDataToEndList(CIList* ci_list, int id, int amount, char importance);
 void makeEmptyCIList(CIList* ci_list);
-void printConcertHour(float time);
-void printConcertDetails(Concert* concert);
+//void printConcertHour(float time);
+//void printConcertDetails(Concert* concert);
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list);

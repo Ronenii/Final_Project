@@ -18,6 +18,7 @@ TreeNode* createNewInstrument(char* name, unsigned short insID)
 	checkMemoryAllocation(instrument);
 	instrument->insId = insID;
 	instrument->instrument = _strdup(name);
+	checkMemoryAllocation(instrument->instrument);
 	instrument->left = instrument->right = NULL;
 	return instrument;
 }

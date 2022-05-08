@@ -97,27 +97,34 @@ void makeEmptyCIList(CIList* ci_list)
 	ci_list->tail = NULL;
 }
 
-// This fucntion prints entire concert details. 
-void printConcertDetails(Concert concert)
-{
-	printf("Concert name: ''%s''\n", concert.name);
-	printf("Concert date: %d %d %d\n", concert.date_of_concert.day,
-    concert.date_of_concert.month, concert.date_of_concert.year);
-	printConcertHour(concert.date_of_concert.hour);
-	//print concert Musicians fucntion here (artist, artist instruments, price for playing on each instrument).
-}
-
-
-// This fucntion gets a float and prints the hour in an HH:MM format
-void printConcertHour(float time)
-{
-	int hour = (int)time;
-	float minutes = ((time - hour) * FLOAT_CAST);
-	if (minutes < HOUR_CALC)
-		printf("Concert hour : %d:0%d", hour, (int)(minutes));
-	else
-		printf("Concert hour : %d:%d", hour, (int)(minutes));
-}
+//// This fucntion prints entire concert details. 
+//void printConcertDetails(Concert concert)
+//{
+//	CINode* curr = concert.instruments.head;
+//	printf("Concert name: ''%s''\n", concert.name);
+//	printf("Concert date: %d %d %d\n", concert.date_of_concert.day,
+//    concert.date_of_concert.month, concert.date_of_concert.year);
+//	printConcertHour(concert.date_of_concert.hour);
+//	
+//	while (curr != NULL)
+//	{
+//		printf("\nimportance: %c ID: %d count: %d\n",curr->ci_data.importance, curr->ci_data.inst, curr->ci_data.num);
+//		curr = curr->next;
+//	}
+//	//print concert Musicians fucntion here (artist, artist instruments, price for playing on each instrument).
+//}
+//
+//
+//// This fucntion gets a float and prints the hour in an HH:MM format
+//void printConcertHour(float time)
+//{
+//	int hour = (int)time;
+//	float minutes = ((time - hour) * FLOAT_CAST);
+//	if (minutes < HOUR_CALC)
+//		printf("Concert hour : %d:0%d", hour, (int)(minutes));
+//	else
+//		printf("Concert hour : %d:%d", hour, (int)(minutes));
+//}
 
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
@@ -152,7 +159,7 @@ void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIL
 		instruments = strtok(NULL, SPACE);
 		if (instruments != NULL)
 		{
-			id = findInsId(inst_tr, line);
+			id = findInsId(inst_tr, instruments);
 			amount = atoi(strtok(NULL, SPACE));
 			importance = (strtok(NULL, SPACE))[0];
 		}

@@ -15,8 +15,6 @@ void main(int argc, char* argv[])
 	Concert* concert_input = GetConcert(instrument_tree);
 	printConcertDetails(concert_input);
 
-	musicians = GetMusiciansFromFile("musicians.txt", instrument_tree, &musician_count);
-
 	freeMusicians(musicians, musician_count);
 	freeInstrumentTree(instrument_tree);
 }
