@@ -68,8 +68,10 @@ void freeCIList(CIList instruments_list);
 void freeConcert(Concert* concert);
 void printMusicians(Musician** musicians, int size, InstrumentTree tr);
 void printConcertHour(float time);
+void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res);
+void setAllMusiciansAvailable(Musician** musicians_arr, int arr_size);
 
 Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id);
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count);
 char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id);
-void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res);
+

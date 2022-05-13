@@ -101,12 +101,13 @@ void makeEmptyCIList(CIList* ci_list)
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
 {
-		char* concert_line = getString();
-		Concert* concert_res = (Concert*)malloc(sizeof(Concert));
-		checkMemoryAllocation(concert_res);
-		makeEmptyCIList(&(concert_res->instruments));
-		SetConcertDetails(concert_res, concert_line, inst_tr, &(concert_res->instruments));
-		return concert_res;
+	fflush(stdin);
+	char* concert_line = getString();
+	Concert* concert_res = (Concert*)malloc(sizeof(Concert));
+	checkMemoryAllocation(concert_res);
+	makeEmptyCIList(&(concert_res->instruments));
+	SetConcertDetails(concert_res, concert_line, inst_tr, &(concert_res->instruments));
+	return concert_res;
 }
 
 // This fucntion sets the cocnert's details from the users cocnert input.
@@ -159,15 +160,14 @@ void freeConcert(Concert* concert)
 	free(concert->name);
 	free(concert);
 }
-//input example: Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
 
+//input example: Tommorowland 13 11 2012 21:30 Viola 1 0 Drums 2 1 Piano 5 0 Amazing 1 0 
 // This fucntion returns matching musicians array, due to concert input
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count)
 {
 	int log_size = 0, physic_size = 1, curr_amount_of_instruments;
 	Musician** concert_musician_arr = (Musician**)malloc(sizeof(Musician*));
 	checkMemoryAllocation(concert_musician_arr);
-	CIList concert_inst_lst = concert->instruments;
 	CINode* concert_inst_node = concert->instruments.head;
 	while (concert_inst_node != NULL)
 	{
@@ -176,8 +176,7 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
 			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
-
-			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found , add him to the array. 
+			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found and not used , add him to the array. 
 			{
 				if (log_size == physic_size)
 				{
@@ -220,10 +219,12 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 // This fucntion prints entire concert details. 
 void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size, InstrumentTree tr)
 {
+	printf("\n----------------------------------------------------------------\n\n");
 	printf("\nConcert name: ''%s''\n", concert->name);
 	printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 	printConcertHour(concert->date_of_concert.hour);
 	printMusicians(concert_musicians, concert_musicians_size, tr);
+	printf("\n----------------------------------------------------------------\n\n\n");
 }
 
 // prints concert_musicians array. 
@@ -241,7 +242,9 @@ void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 		printf("will play on : %s for %.2f$\n", getConcertInstNameFromTree(tr, musicians[musician_ind]->concert_inst_id), curr_price);
 
 	}
-	printf("enjoy the show! :)\n\n");
+	if (size = 0)
+		printf("Try to pick another concert!\n\n\n");
+
 }
 
 float getInstPriceFromList(MPIList musician_inst_lst, int inst_id)
@@ -280,13 +283,18 @@ void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res)
 	else
 	{
 		if (curr->insId == id)
-		{
 			*res = _strdup(curr->instrument);
-		}
 		else
 		{
 			getConcertInstNameFromTreeHelper(curr->left, id, res);
 			getConcertInstNameFromTreeHelper(curr->right, id, res);
 		}
 	}
+}
+
+// sets all musicians availabe again so we could use them in more concerts. 
+void setAllMusiciansAvailable(Musician** musicians_arr, int arr_size)
+{
+	for (int musician_ind = 0; musician_ind < arr_size; musician_ind++)
+		musicians_arr[musician_ind]->availability = true;
 }

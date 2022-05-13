@@ -25,3 +25,4 @@
 void checkMemoryAllocation(void* ptr);
 void checkFileOpening(FILE* f);
 char* getString(); 
+void printGoodbyeMessage();

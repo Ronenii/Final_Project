@@ -44,3 +44,8 @@ void checkMemoryAllocation(void* ptr)
 		exit(1);
 	}
 }
+
+void printGoodbyeMessage()
+{
+	printf("Enjoy the shows :-)\n\n\n");
+}
