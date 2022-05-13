@@ -66,3 +66,6 @@ void makeEmptyCIList(CIList* ci_list);
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list);
 void freeCIList(CIList instruments_list);
 void freeConcert(Concert* concert);
+
+Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_collection_arr);
+Musician* getMusicianFromPointersArray(Musician** musicians_collection_arr, int inst_id);

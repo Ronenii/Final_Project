@@ -20,6 +20,7 @@
 #define NUMBERS "0123456789\\n"
 #define NOT_FOUND -1
 #define SPACE " "
+#define PHYSIC_SIZE_INCREASE 2
 /*Function refrences*/
 void checkMemoryAllocation(void* ptr);
 void checkFileOpening(FILE* f);

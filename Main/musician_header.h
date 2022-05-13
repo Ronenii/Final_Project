@@ -33,6 +33,7 @@ typedef struct
 	char** name;
 	int name_length;
 	MPIList instruments;
+	bool availability; 
 }Musician;
 
 /*Function refrences*/

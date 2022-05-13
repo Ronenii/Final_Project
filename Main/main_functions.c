@@ -1,6 +1,5 @@
 #include "main_header.h"
 
-#define MEMORY_INCREASE 2
 
 // The fucntion gets a string from the user and allocates memory due to the ammount of letters of the input untill \n is being inserted. 
 // O(n) - n is the string input length. 
@@ -15,7 +14,7 @@ char* getString()
 	{
 		if (logSize == phySize)
 		{
-			phySize *= MEMORY_INCREASE; // for realloc allocation the pyhsical size need to be multiplied by two. 
+			phySize *= PHYSIC_SIZE_INCREASE; // for realloc allocation the pyhsical size need to be multiplied by two. 
 			string = (char*)realloc(string, sizeof(char) * phySize);
 			checkMemoryAllocation(string);
 		}

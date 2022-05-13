@@ -32,10 +32,10 @@ bool isDigit(char ch)
 }
 
 // This fucntion checks if a musician exists in the musician's array for the requested concert. 
-bool checkIfMusicianExists(Musician** musicians_arr,int size_of_musician_arr, char* musician_name)
+bool checkIfMusicianExists(Musician** musicians_arr, int size_of_musician_arr, char* musician_name)
 {
 	bool check = false;
-	int musicians_arr_ind = 0; 
+	int musicians_arr_ind = 0;
 	for (int i = 0; i < size_of_musician_arr && check == false; i++)
 	{
 		if (strcmp(musicians_arr[musicians_arr_ind]->name, musician_name) == 0)
@@ -53,14 +53,14 @@ bool checkEmptyList(CIList* instrument_list)
 		return false;
 }
 
- // This function returns a new concert instrument list node. 
+// This function returns a new concert instrument list node. 
 CINode* createNewCIListNode(int id, int amount, char importance, CINode* next)
 {
-	CINode* new_ci_node; 
+	CINode* new_ci_node;
 	new_ci_node = (CINode*)malloc(sizeof(CINode));
 	checkMemoryAllocation(new_ci_node);
 	new_ci_node->ci_data.inst = id;
-	new_ci_node->ci_data.num = amount; 
+	new_ci_node->ci_data.num = amount;
 	new_ci_node->ci_data.importance = importance;
 	new_ci_node->next = next;
 	return new_ci_node;
@@ -85,7 +85,7 @@ void insertCINodeToEndList(CIList* ci_list, CINode* new_ci_tail)
 // This fucntion inserts the data of the CI_NODE to the end of the list
 void insertCIDataToEndList(CIList* ci_list, int id, int amount, char importance)
 {
-	CINode* new_ci_tail; 
+	CINode* new_ci_tail;
 	new_ci_tail = createNewCIListNode(id, amount, importance, NULL);
 	insertCINodeToEndList(ci_list, new_ci_tail);
 }
@@ -129,11 +129,11 @@ void makeEmptyCIList(CIList* ci_list)
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
 {
-	char* concert_line = getString(); 
+	char* concert_line = getString();
 	Concert* concert_res = (Concert*)malloc(sizeof(Concert));
 	checkMemoryAllocation(concert_res);
 	makeEmptyCIList(&(concert_res->instruments));
-	SetConcertDetails(concert_res, concert_line,inst_tr, &(concert_res->instruments));
+	SetConcertDetails(concert_res, concert_line, inst_tr, &(concert_res->instruments));
 	free(concert_line);
 	return concert_res;
 }
@@ -142,7 +142,7 @@ Concert* GetConcert(InstrumentTree inst_tr)
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list)
 {
 
-	char* instruments; int amount,id; char importance;
+	char* instruments; int amount, id; char importance;
 	concert->name = strtok(line, SPACE);
 	concert->date_of_concert.day = atoi(strtok(NULL, SPACE));
 	concert->date_of_concert.month = atoi(strtok(NULL, SPACE));
@@ -190,5 +190,78 @@ void freeConcert(Concert* concert)
 }
 //input example: Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
 
+// This fucntion returns matching musicians array, due to concert input
+Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_collection_arr)
+{
+	int log_size = 0, physic_size = 1, curr_amount_of_instruments;
+	Musician** concert_musician_arr = (Musician**)malloc(sizeof(Musician*));
+	checkMemoryAllocation(concert_musician_arr);
+
+	CIList concert_inst_lst = concert->instruments;
+	CINode* concert_inst_node = concert->instruments.head;
+
+	while (concert_inst_node != NULL)
+	{
+		curr_amount_of_instruments = concert_inst_node->ci_data.num;
+
+		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
+		{
+			Musician* concert_musicain = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
+			if (concert_musicain != NULL) // if musician is found , add him to the array. 
+			{
+				if (log_size == physic_size)
+				{
+					physic_size *= PHYSIC_SIZE_INCREASE;
+					concert_musician_arr = (Musician*)realloc(concert_musician_arr, sizeof(Musician) * physic_size);
+					checkMemoryAllocation(concert_musician_arr);
+				}
+				concert_musician_arr[log_size] = concert_musicain;
+				log_size++;
+				concert_inst_node = concert_inst_node->next;
+			}
+			else // if musician not found continue 
+				concert_inst_node = concert_inst_node->next;
+		}
+
+	}
+
+	if (log_size == 0)
+	{
+		printf("Could not find musicians for the concert %s", concert->name);
+	}
+	else
+		return concert_musician_arr; 
+}
+
+// returns a musician adress who plays the give inst_id instrument 
+Musician* getMusicianFromPointersArray(Musician** musicians_collection_arr, int inst_id)
+{
+	if (inst_id != NOT_FOUND)
+	{
+		Musician* res_musician = musicians_collection_arr[inst_id];
+		res_musician->availability = false; // changes musician status to taken. 
+		return res_musician;
+	}
+	else
+		return NULL; 
+}
+
+
+
+
+
+// checks if the musician plays
+//bool checkMusicianInstruments(CIList concert_inst_list, Musician* musician)
+//{
+//	CINode* curr_inst = concert_inst_list.head;
+//	MPIListNode* curr_musician_instrument = musician->instruments.head;
+//	while (curr_inst != NULL)
+//	{
+//		while (curr_musician_instrument != NULL)
+//		{
+//			
+//		}
+//	}
+//}
 
 
