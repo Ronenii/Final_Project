@@ -17,7 +17,7 @@ void main(int argc, char* argv[])
 	MusiciansCollection = createMusiciansCollection(MusiciansGroup, instrument_count, musician_count);
 
 	Concert* Concert = GetConcert(instrument_tree);
-	ConcertMusicians = getMusiciansArrToConcert(Concert, MusiciansCollection);
+	ConcertMusicians = getMusiciansArrToConcert(Concert, *MusiciansCollection);
 
 	freeConcert(Concert);
 	freeMusicians(MusiciansGroup, musician_count);

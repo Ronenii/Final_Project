@@ -134,7 +134,6 @@ Concert* GetConcert(InstrumentTree inst_tr)
 	checkMemoryAllocation(concert_res);
 	makeEmptyCIList(&(concert_res->instruments));
 	SetConcertDetails(concert_res, concert_line, inst_tr, &(concert_res->instruments));
-	free(concert_line);
 	return concert_res;
 }
 
@@ -238,16 +237,16 @@ Musician* getMusicianFromPointersArray(Musician** musicians_collection_arr, int 
 {
 	if (inst_id != NOT_FOUND)
 	{
-		Musician* res_musician = musicians_collection_arr[inst_id];
-		res_musician->availability = false; // changes musician status to taken. 
-		return res_musician;
+		if (musicians_collection_arr[inst_id]->availability == true)
+		{
+			Musician* res_musician = musicians_collection_arr[inst_id];
+			res_musician->availability = false; // changes musician status to taken. 
+			return res_musician;
+		}
 	}
 	else
 		return NULL; 
 }
-
-
-
 
 
 // checks if the musician plays
