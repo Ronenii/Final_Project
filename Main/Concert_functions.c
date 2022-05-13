@@ -218,29 +218,30 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 }
 
 // This fucntion prints entire concert details. 
-void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size)
+void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size, InstrumentTree tr)
 {
 	printf("\nConcert name: ''%s''\n", concert->name);
 	printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 	printConcertHour(concert->date_of_concert.hour);
-	printMusicians(concert_musicians, concert_musicians_size);
+	printMusicians(concert_musicians, concert_musicians_size,tr);
 }
 
 // prints concert_musicians array. 
-void printMusicians(Musician** musicians, int size)
+void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 {
 	float curr_price;
 	printf("\n\nConcert Artists: \n");
-	for (int musician_ind = 0; musician_ind < size; musician_ind++)
+	for (int musician_ind = 0; musician_ind < 3; musician_ind++)
 	{
 		for (int inst_ind = 0; inst_ind < musicians[musician_ind]->name_length; inst_ind++)
 		{
 			printf("%s ", musicians[musician_ind]->name[inst_ind]);
 		}
 		curr_price = getInstPriceFromList(musicians[musician_ind]->instruments, musicians[musician_ind]->concert_inst_id);
-		printf("will play on : %d for %.2f$\n", musicians[musician_ind]->concert_inst_id, curr_price);
+		printf("will play on : %s for %.2f$\n", getConcertInstNameFromTree(tr,musicians[musician_ind]->concert_inst_id), curr_price);
 
 	}
+	printf("enjoy the show! :)");
 }
 
 float getInstPriceFromList(MPIList musician_inst_lst, int inst_id)
@@ -265,5 +266,27 @@ void printConcertHour(float time)
 		printf("Concert hour : %d:%d", hour, (int)(minutes));
 }
 
+char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id)
+{
+	char* res_inst_name;
+	getConcertInstNameFromTreeHelper(inst_tr.root, id,&res_inst_name);
+	return res_inst_name; 
+}
 
-
+void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res)
+{
+	if (curr == NULL)
+		return;
+	else
+	{
+		if (curr->insId == id)
+		{
+			 *res = _strdup(curr->instrument);
+		}
+		else
+		{
+			getConcertInstNameFromTreeHelper(curr->left, id,res);
+			getConcertInstNameFromTreeHelper(curr->right, id,res);
+		}
+	}
+}

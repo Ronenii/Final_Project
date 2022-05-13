@@ -62,12 +62,14 @@ float getInstPriceFromList(MPIList musician_inst_lst, int inst_id);
 void insertCINodeToEndList(CIList* ci_list, CINode* new_ci_tail);
 void insertCIDataToEndList(CIList* ci_list, int id, int amount, char importance);
 void makeEmptyCIList(CIList* ci_list);
-void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size);
+void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size, InstrumentTree tr);
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list);
 void freeCIList(CIList instruments_list);
 void freeConcert(Concert* concert);
-void printMusicians(Musician** musicians, int size);
+void printMusicians(Musician** musicians, int size, InstrumentTree tr);
 void printConcertHour(float time);
 
 Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id);
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count);
+char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id);
+void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res);

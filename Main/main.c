@@ -18,7 +18,7 @@ void main(int argc, char* argv[])
 
 	Concert* Concert = GetConcert(instrument_tree);
 	ConcertMusicians = getMusiciansArrToConcert(Concert, MusiciansCollection,&concert_musicians_count);
-	printConcertDetails(Concert, ConcertMusicians,concert_musicians_count);
+	printConcertDetails(Concert, ConcertMusicians,concert_musicians_count,instrument_tree);
 
 	freeConcert(Concert);
 	freeMusicians(MusiciansGroup, musician_count);//void printMusicians(Musician** musicians,int size)
