@@ -6,6 +6,7 @@
 /*Main*/
 void main(int argc, char* argv[])
 {
+
 	int musician_count, instrument_count, concert_musicians_count; 
 	InstrumentTree instrument_tree;
 
@@ -16,12 +17,13 @@ void main(int argc, char* argv[])
 	MusiciansCollection = createMusiciansCollection(MusiciansGroup, instrument_count, musician_count);
 
 	Concert* Concert = GetConcert(instrument_tree);
-	ConcertMusicians = getMusiciansArrToConcert(Concert, *MusiciansCollection,&concert_musicians_count);
+	ConcertMusicians = getMusiciansArrToConcert(Concert, MusiciansCollection,&concert_musicians_count);
 	printConcertDetails(Concert, ConcertMusicians,concert_musicians_count);
 
 	freeConcert(Concert);
 	freeMusicians(MusiciansGroup, musician_count);
 	freeInstrumentTree(instrument_tree);
+
 }
 
 

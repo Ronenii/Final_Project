@@ -162,7 +162,7 @@ void freeConcert(Concert* concert)
 //input example: Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
 
 // This fucntion returns matching musicians array, due to concert input
-Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_collection_arr, int* concert_musicians_count)
+Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count)
 {
 	int log_size = 0, physic_size = 1, curr_amount_of_instruments;
 	Musician** concert_musician_arr = (Musician**)malloc(sizeof(Musician*));
@@ -175,9 +175,9 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_colle
 
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
-			Musician* concert_musicain = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
+			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
 
-			if (concert_musicain != NULL) // if musician is found , add him to the array. 
+			if (concert_musician != NULL) // if musician is found , add him to the array. 
 			{
 				if (log_size == physic_size)
 				{
@@ -185,8 +185,7 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_colle
 					concert_musician_arr = (Musician**)realloc(concert_musician_arr, sizeof(Musician*) * physic_size);
 					checkMemoryAllocation(concert_musician_arr);
 				}
-				concert_musician_arr[log_size] = concert_musicain;
-				log_size++;
+				concert_musician_arr[log_size++] = concert_musician;
 			}
 		}
 		concert_inst_node = concert_inst_node->next;
@@ -199,15 +198,18 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_colle
 }
 
 // returns a musician adress who plays the give inst_id instrument 
-Musician* getMusicianFromPointersArray(Musician** musicians_collection_arr, int inst_id)
+Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id)
 {
 	if (inst_id != NOT_FOUND)
 	{
-		if (musicians_collection_arr[inst_id]->availability == true)
+		for (int musician_ind = 0; musicians_collection_arr[inst_id][musician_ind] != NULL; musician_ind++)
 		{
-			Musician* res_musician = musicians_collection_arr[inst_id];
-			res_musician->availability = false; // changes musician status to taken. 
-			return res_musician;
+			if (musicians_collection_arr[inst_id][musician_ind]->availability == true)
+			{
+				Musician* res_musician = musicians_collection_arr[inst_id][musician_ind];
+				res_musician->availability = false; // changes musician status to taken. 
+				return res_musician;
+			}
 		}
 	}
 	else

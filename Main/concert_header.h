@@ -68,5 +68,5 @@ void freeConcert(Concert* concert);
 void printMusicians(Musician** musicians, int size);
 void printConcertHour(float time);
 
-Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_collection_arr, int* concert_musicians_count);
-Musician* getMusicianFromPointersArray(Musician** musicians_collection_arr, int inst_id);
+Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id);
+Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count);

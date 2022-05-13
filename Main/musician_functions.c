@@ -48,15 +48,15 @@ Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count
 Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID)
 {
 	int playing_musicians = 0;
-	Musician** MusiciansByInstruments = (Musician**)malloc(sizeof(Musician*)*musician_count);
+	Musician** MusiciansByInstruments = (Musician**)malloc(sizeof(Musician*)*(musician_count));
 	checkMemoryAllocation(MusiciansByInstruments);
 	for (int musician_pindex = 0; musician_pindex < musician_count; musician_pindex++)
 	{
 		if (playsInstrument(MusicianGroup[musician_pindex], insID))
 			MusiciansByInstruments[playing_musicians++] = MusicianGroup[musician_pindex];
 	}
-	MusiciansByInstruments = (Musician**)realloc(MusiciansByInstruments, sizeof(Musician**)*playing_musicians);
-
+	MusiciansByInstruments = (Musician**)realloc(MusiciansByInstruments, sizeof(Musician**)*(playing_musicians+1));
+	MusiciansByInstruments[playing_musicians] = NULL;
 	return MusiciansByInstruments;
 }
 
