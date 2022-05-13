@@ -134,6 +134,7 @@ Concert* GetConcert(InstrumentTree inst_tr)
 	checkMemoryAllocation(concert_res);
 	makeEmptyCIList(&(concert_res->instruments));
 	SetConcertDetails(concert_res, concert_line,inst_tr, &(concert_res->instruments));
+	free(concert_line);
 	return concert_res;
 }
 
