@@ -177,7 +177,7 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 		{
 			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
 
-			if (concert_musician != NULL) // if musician is found , add him to the array. 
+			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found , add him to the array. 
 			{
 				if (log_size == physic_size)
 				{
@@ -186,6 +186,7 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 					checkMemoryAllocation(concert_musician_arr);
 				}
 				concert_musician_arr[log_size++] = concert_musician;
+				concert_musician->availability = false; // changes musician status to taken. 
 			}
 		}
 		concert_inst_node = concert_inst_node->next;
@@ -207,7 +208,6 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 			if (musicians_collection_arr[inst_id][musician_ind]->availability == true)
 			{
 				Musician* res_musician = musicians_collection_arr[inst_id][musician_ind];
-				res_musician->availability = false; // changes musician status to taken. 
 				res_musician->concert_inst_id = inst_id;
 				return res_musician;
 			}
@@ -223,7 +223,7 @@ void printConcertDetails(Concert* concert, Musician** concert_musicians, int con
 	printf("\nConcert name: ''%s''\n", concert->name);
 	printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 	printConcertHour(concert->date_of_concert.hour);
-	printMusicians(concert_musicians, concert_musicians_size,tr);
+	printMusicians(concert_musicians, concert_musicians_size, tr);
 }
 
 // prints concert_musicians array. 
@@ -231,17 +231,17 @@ void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 {
 	float curr_price;
 	printf("\n\nConcert Artists: \n");
-	for (int musician_ind = 0; musician_ind < 3; musician_ind++)
+	for (int musician_ind = 0; musician_ind < size; musician_ind++)
 	{
 		for (int inst_ind = 0; inst_ind < musicians[musician_ind]->name_length; inst_ind++)
 		{
 			printf("%s ", musicians[musician_ind]->name[inst_ind]);
 		}
 		curr_price = getInstPriceFromList(musicians[musician_ind]->instruments, musicians[musician_ind]->concert_inst_id);
-		printf("will play on : %s for %.2f$\n", getConcertInstNameFromTree(tr,musicians[musician_ind]->concert_inst_id), curr_price);
+		printf("will play on : %s for %.2f$\n", getConcertInstNameFromTree(tr, musicians[musician_ind]->concert_inst_id), curr_price);
 
 	}
-	printf("enjoy the show! :)");
+	printf("enjoy the show! :)\n\n");
 }
 
 float getInstPriceFromList(MPIList musician_inst_lst, int inst_id)
@@ -269,8 +269,8 @@ void printConcertHour(float time)
 char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id)
 {
 	char* res_inst_name;
-	getConcertInstNameFromTreeHelper(inst_tr.root, id,&res_inst_name);
-	return res_inst_name; 
+	getConcertInstNameFromTreeHelper(inst_tr.root, id, &res_inst_name);
+	return res_inst_name;
 }
 
 void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res)
@@ -281,12 +281,12 @@ void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res)
 	{
 		if (curr->insId == id)
 		{
-			 *res = _strdup(curr->instrument);
+			*res = _strdup(curr->instrument);
 		}
 		else
 		{
-			getConcertInstNameFromTreeHelper(curr->left, id,res);
-			getConcertInstNameFromTreeHelper(curr->right, id,res);
+			getConcertInstNameFromTreeHelper(curr->left, id, res);
+			getConcertInstNameFromTreeHelper(curr->right, id, res);
 		}
 	}
 }
