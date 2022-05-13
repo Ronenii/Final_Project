@@ -101,12 +101,12 @@ void makeEmptyCIList(CIList* ci_list)
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
 {
-	char* concert_line = getString();
-	Concert* concert_res = (Concert*)malloc(sizeof(Concert));
-	checkMemoryAllocation(concert_res);
-	makeEmptyCIList(&(concert_res->instruments));
-	SetConcertDetails(concert_res, concert_line, inst_tr, &(concert_res->instruments));
-	return concert_res;
+		char* concert_line = getString();
+		Concert* concert_res = (Concert*)malloc(sizeof(Concert));
+		checkMemoryAllocation(concert_res);
+		makeEmptyCIList(&(concert_res->instruments));
+		SetConcertDetails(concert_res, concert_line, inst_tr, &(concert_res->instruments));
+		return concert_res;
 }
 
 // This fucntion sets the cocnert's details from the users cocnert input.
