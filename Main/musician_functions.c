@@ -161,7 +161,7 @@ void set_musician(Musician* musician, char** name, int name_length, MPIList inst
 	musician->name = name;
 	musician->name_length = name_length;
 	musician->instruments = instrument_list;
-	musician->availability = true; 
+	musician->availability = true;
 }
 
 //Frees the musicians pointer array

@@ -39,18 +39,19 @@ typedef struct
 /*Function refrences*/
 Musician*** createMusiciansCollection(Musician** MusicianGroup, int size, int musician_count);
 Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID);
-bool playsInstrument(Musician* musician, int insID);
-Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count);
 Musician* getMusician(char* line, InstrumentTree tree);
-void addStringToName(char** name, char* token, int* name_index);
 MPIListNode* createNewMPIListNode(MPIListNode* next, unsigned short insID, char* price);
+Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count);
+
+void addStringToName(char** name, char* token, int* name_index);
 void createNewMPIList(MPIList* instruments);
-bool MPIListIsEmpty(MPIList* lst);
 void insertMPIDataToEndList(MPIList* lst, unsigned short insID, char* price);
-//void printMusicians(Musician** musicians, int size);
 void set_musician(Musician* musician, char** name, int name_length, MPIList instrument_list);
 void freeMusicians(Musician** musicians, int musicians_size);
 void freeMusician(Musician* musician);
 void freeName(char** name, int name_size);
 void freeMPIList(MPIList instrument_list);
+
+bool MPIListIsEmpty(MPIList* lst);
+bool playsInstrument(Musician* musician, int insID);
 

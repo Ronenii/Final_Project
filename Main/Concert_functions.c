@@ -97,34 +97,6 @@ void makeEmptyCIList(CIList* ci_list)
 	ci_list->tail = NULL;
 }
 
-//// This fucntion prints entire concert details. 
-//void printConcertDetails(Concert concert)
-//{
-//	CINode* curr = concert.instruments.head;
-//	printf("Concert name: ''%s''\n", concert.name);
-//	printf("Concert date: %d %d %d\n", concert.date_of_concert.day,
-//    concert.date_of_concert.month, concert.date_of_concert.year);
-//	printConcertHour(concert.date_of_concert.hour);
-//	
-//	while (curr != NULL)
-//	{
-//		printf("\nimportance: %c ID: %d count: %d\n",curr->ci_data.importance, curr->ci_data.inst, curr->ci_data.num);
-//		curr = curr->next;
-//	}
-//	//print concert Musicians fucntion here (artist, artist instruments, price for playing on each instrument).
-//}
-//
-//
-//// This fucntion gets a float and prints the hour in an HH:MM format
-//void printConcertHour(float time)
-//{
-//	int hour = (int)time;
-//	float minutes = ((time - hour) * FLOAT_CAST);
-//	if (minutes < HOUR_CALC)
-//		printf("Concert hour : %d:0%d", hour, (int)(minutes));
-//	else
-//		printf("Concert hour : %d:%d", hour, (int)(minutes));
-//}
 
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
@@ -190,15 +162,13 @@ void freeConcert(Concert* concert)
 //input example: Tommorowland 20 20 2012 21:30 Viola 1 0 Drums 2 1
 
 // This fucntion returns matching musicians array, due to concert input
-Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_collection_arr)
+Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_collection_arr, int* concert_musicians_count)
 {
 	int log_size = 0, physic_size = 1, curr_amount_of_instruments;
 	Musician** concert_musician_arr = (Musician**)malloc(sizeof(Musician*));
 	checkMemoryAllocation(concert_musician_arr);
-
 	CIList concert_inst_lst = concert->instruments;
 	CINode* concert_inst_node = concert->instruments.head;
-
 	while (concert_inst_node != NULL)
 	{
 		curr_amount_of_instruments = concert_inst_node->ci_data.num;
@@ -206,28 +176,24 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician** musicians_colle
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
 			Musician* concert_musicain = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
+
 			if (concert_musicain != NULL) // if musician is found , add him to the array. 
 			{
 				if (log_size == physic_size)
 				{
 					physic_size *= PHYSIC_SIZE_INCREASE;
-					concert_musician_arr = (Musician*)realloc(concert_musician_arr, sizeof(Musician) * physic_size);
+					concert_musician_arr = (Musician**)realloc(concert_musician_arr, sizeof(Musician*) * physic_size);
 					checkMemoryAllocation(concert_musician_arr);
 				}
 				concert_musician_arr[log_size] = concert_musicain;
 				log_size++;
-				concert_inst_node = concert_inst_node->next;
 			}
-			else // if musician not found continue 
-				concert_inst_node = concert_inst_node->next;
 		}
-
+		concert_inst_node = concert_inst_node->next;
 	}
-
+	*concert_musicians_count = log_size; 
 	if (log_size == 0)
-	{
 		printf("Could not find musicians for the concert %s", concert->name);
-	}
 	else
 		return concert_musician_arr; 
 }
@@ -248,19 +214,45 @@ Musician* getMusicianFromPointersArray(Musician** musicians_collection_arr, int 
 		return NULL; 
 }
 
+// This fucntion prints entire concert details. 
+void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size)
+{
+	printf("Concert name: ''%s''\n", concert->name);
+	printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
+	printConcertHour(concert->date_of_concert.hour);
+	printMusicians(concert_musicians, concert_musicians_size);
+}
 
-// checks if the musician plays
-//bool checkMusicianInstruments(CIList concert_inst_list, Musician* musician)
-//{
-//	CINode* curr_inst = concert_inst_list.head;
-//	MPIListNode* curr_musician_instrument = musician->instruments.head;
-//	while (curr_inst != NULL)
-//	{
-//		while (curr_musician_instrument != NULL)
-//		{
-//			
-//		}
-//	}
-//}
+// prints concert_musicians array. 
+void printMusicians(Musician** musicians, int size)
+{
+	MPIListNode* ins_list_curr;
+	printf("Concert Artists: \n");
+	for (int musician_ind = 0; musician_ind < size; musician_ind++)
+	{
+		for (int inst_ind = 0; inst_ind < musicians[musician_ind]->name_length; inst_ind++)
+			printf("%s ", musicians[musician_ind]->name[inst_ind]);
+		ins_list_curr = musicians[musician_ind]->instruments.head;
+
+		while (ins_list_curr != NULL)
+		{
+			printf("%d %f\n", ins_list_curr->mpi_data.insId, ins_list_curr->mpi_data.price);
+			ins_list_curr = ins_list_curr->next;
+		}
+	}
+}
+
+
+// This fucntion gets a float and prints the hour in an HH:MM format
+void printConcertHour(float time)
+{
+	int hour = (int)time;
+	float minutes = ((time - hour) * FLOAT_CAST);
+	if (minutes < HOUR_CALC)
+		printf("Concert hour : %d:0%d", hour, (int)(minutes));
+	else
+		printf("Concert hour : %d:%d", hour, (int)(minutes));
+}
+
 
 
