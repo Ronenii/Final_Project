@@ -3,8 +3,8 @@
 
 /*Concert header*/
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS	
 #include "musician_header.h"
+
 /*Constants*/
 #define NAME_SIZE 150
 #define HOUR_SIZE 6
@@ -57,6 +57,7 @@ bool checkEmptyList(CIList* instrument_list);
 bool checkIfMusicianExists(Musician** musicians_arr, int size_of_musician_arr, char* musician_name);
 
 float getHourFromString(char* hour_string);
+float getInstPriceFromList(MPIList musician_inst_lst, int inst_id);
 
 void insertCINodeToEndList(CIList* ci_list, CINode* new_ci_tail);
 void insertCIDataToEndList(CIList* ci_list, int id, int amount, char importance);

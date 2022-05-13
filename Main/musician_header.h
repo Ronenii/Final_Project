@@ -33,6 +33,7 @@ typedef struct
 	char** name;
 	int name_length;
 	MPIList instruments;
+	int concert_inst_id; 
 	bool availability;
 }Musician;
 

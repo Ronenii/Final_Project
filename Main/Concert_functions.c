@@ -190,11 +190,11 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 		}
 		concert_inst_node = concert_inst_node->next;
 	}
-	*concert_musicians_count = log_size; 
+	*concert_musicians_count = log_size;
 	if (log_size == 0)
 		printf("Could not find musicians for the concert %s", concert->name);
 	else
-		return concert_musician_arr; 
+		return concert_musician_arr;
 }
 
 // returns a musician adress who plays the give inst_id instrument 
@@ -208,18 +208,19 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 			{
 				Musician* res_musician = musicians_collection_arr[inst_id][musician_ind];
 				res_musician->availability = false; // changes musician status to taken. 
+				res_musician->concert_inst_id = inst_id;
 				return res_musician;
 			}
 		}
 	}
 	else
-		return NULL; 
+		return NULL;
 }
 
 // This fucntion prints entire concert details. 
 void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size)
 {
-	printf("Concert name: ''%s''\n", concert->name);
+	printf("\nConcert name: ''%s''\n", concert->name);
 	printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 	printConcertHour(concert->date_of_concert.hour);
 	printMusicians(concert_musicians, concert_musicians_size);
@@ -228,22 +229,30 @@ void printConcertDetails(Concert* concert, Musician** concert_musicians, int con
 // prints concert_musicians array. 
 void printMusicians(Musician** musicians, int size)
 {
-	MPIListNode* ins_list_curr;
-	printf("Concert Artists: \n");
+	float curr_price;
+	printf("\n\nConcert Artists: \n");
 	for (int musician_ind = 0; musician_ind < size; musician_ind++)
 	{
 		for (int inst_ind = 0; inst_ind < musicians[musician_ind]->name_length; inst_ind++)
-			printf("%s ", musicians[musician_ind]->name[inst_ind]);
-		ins_list_curr = musicians[musician_ind]->instruments.head;
-
-		while (ins_list_curr != NULL)
 		{
-			printf("%d %f\n", ins_list_curr->mpi_data.insId, ins_list_curr->mpi_data.price);
-			ins_list_curr = ins_list_curr->next;
+			printf("%s ", musicians[musician_ind]->name[inst_ind]);
 		}
+		curr_price = getInstPriceFromList(musicians[musician_ind]->instruments, musicians[musician_ind]->concert_inst_id);
+		printf("will play on : %d for %.2f$\n", musicians[musician_ind]->concert_inst_id, curr_price);
+
 	}
 }
 
+float getInstPriceFromList(MPIList musician_inst_lst, int inst_id)
+{
+	MPIListNode* curr_inst = musician_inst_lst.head;
+	while (curr_inst != NULL)
+	{
+		if (curr_inst->mpi_data.insId == inst_id)
+			return curr_inst->mpi_data.price;
+		curr_inst = curr_inst->next;
+	}
+}
 
 // This fucntion gets a float and prints the hour in an HH:MM format
 void printConcertHour(float time)
