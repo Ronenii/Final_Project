@@ -16,6 +16,7 @@ void main(int argc, char* argv[])
 	MusiciansGroup = GetMusiciansFromFile("musicians.txt", instrument_tree,&musician_count);
 	MusiciansCollection = createMusiciansCollection(MusiciansGroup, instrument_count, musician_count);
 
+	printWelcomeMessege();
 	concert_input = getchar();
 	while (concert_input != '\n')
 	{
@@ -26,7 +27,6 @@ void main(int argc, char* argv[])
 		freeConcert(Concert);
 		concert_input = getchar();
 	}
-
 	freeMusicians(MusiciansGroup, musician_count);//void printMusicians(Musician** musicians,int size)
 	freeInstrumentTree(instrument_tree);
 	printGoodbyeMessage();

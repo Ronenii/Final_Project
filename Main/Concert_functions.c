@@ -101,7 +101,7 @@ void makeEmptyCIList(CIList* ci_list)
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
 {
-	fflush(stdin);
+	
 	char* concert_line = getString();
 	Concert* concert_res = (Concert*)malloc(sizeof(Concert));
 	checkMemoryAllocation(concert_res);
@@ -219,19 +219,19 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 // This fucntion prints entire concert details. 
 void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size, InstrumentTree tr)
 {
-	printf("\n----------------------------------------------------------------\n\n");
+	printf("--------------------------------------------------------------------------");
 	printf("\nConcert name: ''%s''\n", concert->name);
 	printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 	printConcertHour(concert->date_of_concert.hour);
 	printMusicians(concert_musicians, concert_musicians_size, tr);
-	printf("\n----------------------------------------------------------------\n\n\n");
+	printf("--------------------------------------------------------------------------\n\n\n\n\n");
 }
 
 // prints concert_musicians array. 
 void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 {
-	float curr_price;
-	printf("\n\nConcert Artists: \n");
+	float curr_price, total_price = 0.0;
+	printf("\nConcert artists: \n..............\n");
 	for (int musician_ind = 0; musician_ind < size; musician_ind++)
 	{
 		for (int inst_ind = 0; inst_ind < musicians[musician_ind]->name_length; inst_ind++)
@@ -239,11 +239,13 @@ void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 			printf("%s ", musicians[musician_ind]->name[inst_ind]);
 		}
 		curr_price = getInstPriceFromList(musicians[musician_ind]->instruments, musicians[musician_ind]->concert_inst_id);
+		total_price += curr_price; // get total price; 
 		printf("will play on : %s for %.2f$\n", getConcertInstNameFromTree(tr, musicians[musician_ind]->concert_inst_id), curr_price);
-
 	}
+	printf("..............\n");
+	printf("\nTotal concert price: %.2f$\n", total_price);
 	if (size = 0)
-		printf("Try to pick another concert!\n\n\n");
+		printf("Try to pick another concert!\n");
 
 }
 
@@ -264,9 +266,9 @@ void printConcertHour(float time)
 	int hour = (int)time;
 	float minutes = ((time - hour) * FLOAT_CAST);
 	if (minutes < HOUR_CALC)
-		printf("Concert hour : %d:0%d", hour, (int)(minutes));
+		printf("Concert hour : %d:0%d\n", hour, (int)(minutes));
 	else
-		printf("Concert hour : %d:%d", hour, (int)(minutes));
+		printf("Concert hour : %d:%d\n", hour, (int)(minutes));
 }
 
 char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id)
@@ -297,4 +299,9 @@ void setAllMusiciansAvailable(Musician** musicians_arr, int arr_size)
 {
 	for (int musician_ind = 0; musician_ind < arr_size; musician_ind++)
 		musicians_arr[musician_ind]->availability = true;
+}
+
+void printWelcomeMessege()
+{
+	printf("Welcome to our concert search engine, please enter concert name, date and instruments:\n\n");
 }
