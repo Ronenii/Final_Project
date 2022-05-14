@@ -101,8 +101,9 @@ void makeEmptyCIList(CIList* ci_list)
 // returns a concert to the user
 Concert* GetConcert(InstrumentTree inst_tr)
 {
-	
 	char* concert_line = getString();
+	if (!strcmp(concert_line,""))
+		return NULL;
 	Concert* concert_res = (Concert*)malloc(sizeof(Concert));
 	checkMemoryAllocation(concert_res);
 	makeEmptyCIList(&(concert_res->instruments));

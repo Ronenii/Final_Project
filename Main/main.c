@@ -7,7 +7,6 @@
 void main(int argc, char* argv[])
 {
 	int musician_count, instrument_count, concert_musicians_count; 
-	char concert_input;
 	InstrumentTree instrument_tree;
 
 	buildInstrumentTree(&instrument_tree, "instruments.txt", &instrument_count);
@@ -17,15 +16,14 @@ void main(int argc, char* argv[])
 	MusiciansCollection = createMusiciansCollection(MusiciansGroup, instrument_count, musician_count);
 
 	printWelcomeMessege();
-	concert_input = getchar();
-	while (concert_input != '\n')
+	Concert* Concert = GetConcert(instrument_tree);
+	while (Concert != NULL)
 	{
-		Concert* Concert = GetConcert(instrument_tree,&concert_input);
 		ConcertMusicians = getMusiciansArrToConcert(Concert, MusiciansCollection, &concert_musicians_count);
 		setAllMusiciansAvailable(ConcertMusicians, concert_musicians_count);
 		printConcertDetails(Concert, ConcertMusicians, concert_musicians_count, instrument_tree);
 		freeConcert(Concert);
-		concert_input = getchar();
+		Concert = GetConcert(instrument_tree);
 	}
 	freeMusicians(MusiciansGroup, musician_count);//void printMusicians(Musician** musicians,int size)
 	freeInstrumentTree(instrument_tree);
