@@ -66,11 +66,11 @@ void printConcertDetails(Concert* concert, Musician** concert_musicians, int con
 void SetConcertDetails(Concert* concert, char* line, InstrumentTree inst_tr, CIList* inst_list);
 void freeCIList(CIList instruments_list);
 void freeConcert(Concert* concert);
-void printMusicians(Musician** musicians, int size, InstrumentTree tr);
 void printConcertHour(float time);
 void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res);
 void setAllMusiciansAvailable(Musician** musicians_arr, int arr_size);
 void printWelcomeMessege();
+void printMusicians(Musician** musicians, int size, InstrumentTree tr);
 
 Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id);
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count);
