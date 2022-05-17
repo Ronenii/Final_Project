@@ -251,6 +251,7 @@ void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 		printf("\nTotal concert price: %.2f$\n", total_price);
 }
 
+// returns the current instrument's price from the musician's instrument list. 
 float getInstPriceFromList(MPIList musician_inst_lst, int inst_id)
 {
 	MPIListNode* curr_inst = musician_inst_lst.head;
@@ -273,6 +274,7 @@ void printConcertHour(float time)
 		printf("Concert hour : %d:%d\n", hour, (int)(minutes));
 }
 
+// returns the requested instrument's name string using his id. 
 char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id)
 {
 	char* res_inst_name;
@@ -280,6 +282,7 @@ char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id)
 	return res_inst_name;
 }
 
+// helper, when the id is found, strdup will return the full instrument's name to res pointer. 
 void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res)
 {
 	if (curr == NULL)
@@ -303,6 +306,7 @@ void setAllMusiciansAvailable(Musician** musicians_arr, int arr_size)
 		musicians_arr[musician_ind]->availability = true;
 }
 
+// prints welcome messege. 
 void printWelcomeMessege()
 {
 	printf("Welcome to our concert search engine, please enter concert name, date and instruments:\n\n");
