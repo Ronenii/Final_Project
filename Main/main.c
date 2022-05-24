@@ -20,7 +20,7 @@ void main(int argc, char* argv[])
 	while (Concert != NULL)
 	{
 		ConcertMusicians = getMusiciansArrToConcert(Concert, MusiciansCollection, &concert_musicians_count);
-		setAllMusiciansAvailable(ConcertMusicians, concert_musicians_count);
+		setAllMusiciansAvailable(MusiciansGroup, musician_count);
 		printConcertDetails(Concert, ConcertMusicians, concert_musicians_count, instrument_tree);
 		freeConcert(Concert);
 		Concert = GetConcert(instrument_tree);

@@ -166,17 +166,17 @@ void freeConcert(Concert* concert)
 // This fucntion returns matching musicians array, due to concert input
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count)
 {
-	int log_size = 0, physic_size = 1, curr_amount_of_instruments;
+	int log_size = 0, physic_size = 1, curr_amount_of_instruments, successful_input;
 	Musician** concert_musician_arr = (Musician**)malloc(sizeof(Musician*));
 	checkMemoryAllocation(concert_musician_arr);
 	CINode* concert_inst_node = concert->instruments.head;
 	while (concert_inst_node != NULL)
 	{
 		curr_amount_of_instruments = concert_inst_node->ci_data.num;
-
+		successful_input = 0;
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
-			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst);
+			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst,&successful_input);
 			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found and not used , add him to the array. 
 			{
 				if (log_size == physic_size)
@@ -189,6 +189,11 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 				concert_musician->availability = false; // changes musician status to taken. 
 			}
 		}
+		if (successful_input != curr_amount_of_instruments)
+		{
+			free(concert_musician_arr);
+			return NULL;
+		}
 		concert_inst_node = concert_inst_node->next;
 	}
 	*concert_musicians_count = log_size;
@@ -196,7 +201,7 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 }
 
 // returns a musician adress who plays the give inst_id instrument 
-Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id)
+Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id, int * successful_input)
 {
 	if (inst_id != NOT_FOUND)
 	{
@@ -206,6 +211,7 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 			{
 				Musician* res_musician = musicians_collection_arr[inst_id][musician_ind];
 				res_musician->concert_inst_id = inst_id;
+				(*successful_input)++;
 				return res_musician;
 			}
 		}
@@ -217,7 +223,7 @@ Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int
 // This fucntion prints entire concert details. 
 void printConcertDetails(Concert* concert, Musician** concert_musicians, int concert_musicians_size, InstrumentTree tr)
 {
-	if (concert_musicians_size != 0)
+	if (concert_musicians_size != 0 && concert_musicians !=NULL)
 	{
 		printf("--------------------------------------------------------------------------");
 		printf("\nConcert name: ''%s''\n", concert->name);
@@ -302,8 +308,8 @@ void getConcertInstNameFromTreeHelper(TreeNode* curr, int id, char** res)
 // sets all musicians availabe again so we could use them in more concerts. 
 void setAllMusiciansAvailable(Musician** musicians_arr, int arr_size)
 {
-	for (int musician_ind = 0; musician_ind < arr_size; musician_ind++)
-		musicians_arr[musician_ind]->availability = true;
+		for (int musician_ind = 0; musician_ind < arr_size; musician_ind++)
+			musicians_arr[musician_ind]->availability = true;
 }
 
 // prints welcome messege. 
