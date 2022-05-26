@@ -172,8 +172,8 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 	CINode* concert_inst_node = concert->instruments.head;
 	while (concert_inst_node != NULL)
 	{
-		curr_amount_of_instruments = concert_inst_node->ci_data.num;
-		successful_input = 0;
+		curr_amount_of_instruments = concert_inst_node->ci_data.num; // sets how many musician's are requested for a certain instrument
+		successful_input = 0; // counts how many musicians has been pulled from the musicians collection array, into the res concert musicians array.
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
 		sortMusiciansByImportance(musicians_collection_arr[concert_inst_node->ci_data.inst], concert_inst_node->ci_data.inst, concert_inst_node->ci_data.importance);
@@ -182,26 +182,30 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 
 			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found and not used , add him to the array. 
 			{
-				if (log_size == physic_size)
+				if (log_size == physic_size) 
 				{
 					physic_size *= PHYSIC_SIZE_INCREASE;
 					concert_musician_arr = (Musician**)realloc(concert_musician_arr, sizeof(Musician*) * physic_size);
 					checkMemoryAllocation(concert_musician_arr);
 				}
-				concert_musician_arr[log_size++] = concert_musician;
-				concert_musician->availability = false; // changes musician status to taken. 
+				concert_musician_arr[log_size++] = concert_musician; 
+				concert_musician->availability = false; // changes musician status to taken after hes been picked to the concert. 
 			}
 		}
-		if (successful_input != curr_amount_of_instruments)
+		/* if theres not a complete match between the amount of musicians requested to the amount of musicians that are availabe from
+		musicians collection array, the fucntion will return NULL and alert the user that there is no concert availabe for his request*/
+		if (successful_input != curr_amount_of_instruments) 
 		{
 			free(concert_musician_arr);
 			return NULL;
 		}
-		concert_inst_node = concert_inst_node->next;
+		concert_inst_node = concert_inst_node->next; // move to next instrument and select his musicians.
 	}
-	*concert_musicians_count = log_size;
+	*concert_musicians_count = log_size; // returns new concert array size. 
 	return concert_musician_arr;
 }
+
+
 
 // returns a musician adress who plays the give inst_id instrument 
 Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id, int * successful_input)
