@@ -166,43 +166,47 @@ void freeConcert(Concert* concert)
 // This fucntion returns matching musicians array, due to concert input
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count)
 {
-	int log_size = 0, physic_size = 1, curr_amount_of_instruments, successful_input;
+	int log_size = 0, physic_size = 1, curr_amount_of_instruments, successful_input;CINode* concert_inst_node = concert->instruments.head;
 	Musician** concert_musician_arr = (Musician**)malloc(sizeof(Musician*));
 	checkMemoryAllocation(concert_musician_arr);
-	CINode* concert_inst_node = concert->instruments.head;
-	while (concert_inst_node != NULL)
+	while (concert_inst_node != NULL && concert_musician_arr!=NULL)
 	{
 		curr_amount_of_instruments = concert_inst_node->ci_data.num; // sets how many musician's are requested for a certain instrument
-		successful_input = 0; // counts how many musicians has been pulled from the musicians collection array, into the res concert musicians array.
+		successful_input = 0; // counts how many musicians has been pulled from the musicians collection array into the res concert musicians array.
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
-		sortMusiciansByImportance(musicians_collection_arr[concert_inst_node->ci_data.inst], concert_inst_node->ci_data.inst, concert_inst_node->ci_data.importance);
-		Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst,&successful_input);
-		
-
+			sortMusiciansByImportance(musicians_collection_arr[concert_inst_node->ci_data.inst], concert_inst_node->ci_data.inst, concert_inst_node->ci_data.importance);
+			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst, &successful_input);
 			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found and not used , add him to the array. 
 			{
-				if (log_size == physic_size) 
+				if (log_size == physic_size)
 				{
 					physic_size *= PHYSIC_SIZE_INCREASE;
 					concert_musician_arr = (Musician**)realloc(concert_musician_arr, sizeof(Musician*) * physic_size);
 					checkMemoryAllocation(concert_musician_arr);
 				}
-				concert_musician_arr[log_size++] = concert_musician; 
+				concert_musician_arr[log_size++] = concert_musician;
 				concert_musician->availability = false; // changes musician status to taken after hes been picked to the concert. 
 			}
 		}
-		/* if theres not a complete match between the amount of musicians requested to the amount of musicians that are availabe from
-		musicians collection array, the fucntion will return NULL and alert the user that there is no concert availabe for his request*/
-		if (successful_input != curr_amount_of_instruments) 
-		{
-			free(concert_musician_arr);
-			return NULL;
-		}
+		concert_musician_arr = checkSuccessfulInput(concert_musician_arr, successful_input, curr_amount_of_instruments);
 		concert_inst_node = concert_inst_node->next; // move to next instrument and select his musicians.
 	}
 	*concert_musicians_count = log_size; // returns new concert array size. 
 	return concert_musician_arr;
+}
+
+/* if theres not a complete match between the amount of musicians requested to the amount of musicians that are availabe from
+musicians collection array, the fucntion will return NULL and alert the user that there is no concert availabe for his request*/
+Musician** checkSuccessfulInput(Musician** musicians_arr,int amount_of_pulled_musicians, int inst_required)
+{
+	if (amount_of_pulled_musicians != inst_required)
+	{
+		free(musicians_arr);
+		return NULL;
+	}
+	else
+		return musicians_arr;
 }
 
 
@@ -232,23 +236,18 @@ void printConcertDetails(Concert* concert, Musician** concert_musicians, int con
 {
 	if (concert_musicians_size != 0 && concert_musicians !=NULL)
 	{
-		printf("--------------------------------------------------------------------------");
-		printf("\nConcert name: ''%s''\n", concert->name);
-		printf("Concert date: %d %d %d\n", concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
+		printf("%s %d %d %d ", concert->name, concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 		printConcertHour(concert->date_of_concert.hour);
 		printMusicians(concert_musicians, concert_musicians_size, tr, concert);
-		printf("--------------------------------------------------------------------------\n\n\n\n\n");
 	}
 	else
-		printf("\n\nCould not find musicians for the concert %s,\nTry to pick another concert!\n\n", concert->name);
+		printf("\nCould not find musicians for the concert %s\n\n\n", concert->name);
 }
 
 // prints concert_musicians array. 
 void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 {
 	float curr_price, total_price = 0.0;
-
-	printf("\nConcert artists: \n..............\n");
 	for (int musician_ind = 0; musician_ind < size; musician_ind++)
 	{
 		for (int inst_ind = 0; inst_ind < musicians[musician_ind]->name_length; inst_ind++)
@@ -257,11 +256,10 @@ void printMusicians(Musician** musicians, int size, InstrumentTree tr)
 		}
 		curr_price = getInstPriceFromList(musicians[musician_ind]->instruments, musicians[musician_ind]->concert_inst_id);
 		total_price += curr_price; // get total price; 
-		printf("will play on : %s for %.2f$\n", getConcertInstNameFromTree(tr, musicians[musician_ind]->concert_inst_id), curr_price);
+		printf(" - %s (%.2f) ", getConcertInstNameFromTree(tr, musicians[musician_ind]->concert_inst_id), curr_price);
 	}
-	printf("..............\n");
 	if (total_price != 0.0)
-		printf("\nTotal concert price: %.2f$\n", total_price);
+		printf("\nTotal cost: %.2f\n\n\n\n", total_price);
 }
 
 // returns the current instrument's price from the musician's instrument list. 
@@ -282,9 +280,9 @@ void printConcertHour(float time)
 	int hour = (int)time;
 	float minutes = ((time - hour) * FLOAT_CAST);
 	if (minutes < HOUR_CALC)
-		printf("Concert hour : %d:0%d\n", hour, (int)(minutes));
+		printf("%d:0%d\n", hour, (int)(minutes));
 	else
-		printf("Concert hour : %d:%d\n", hour, (int)(minutes));
+		printf("%d:%d\n", hour, (int)(minutes));
 }
 
 // returns the requested instrument's name string using his id. 

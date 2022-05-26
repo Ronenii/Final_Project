@@ -75,5 +75,7 @@ void printMusicians(Musician** musicians, int size, InstrumentTree tr);
 Musician* getMusicianFromPointersArray(Musician*** musicians_collection_arr, int inst_id);
 Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_collection_arr, int* concert_musicians_count);
 
+Musician** checkSuccessfulInput(Musician** musicians_arr, int amount_of_pulled_musicians, int inst_required);
+
 char* getConcertInstNameFromTree(InstrumentTree inst_tr, int id);
 
