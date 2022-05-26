@@ -27,6 +27,7 @@ char* getString()
 
 }
 
+//Checks for successful file opening
 void checkFileOpening(FILE* f)
 {
 	if (f == NULL)
@@ -36,6 +37,7 @@ void checkFileOpening(FILE* f)
 	}
 }
 
+//Checks for successful memory allocation
 void checkMemoryAllocation(void* ptr)
 {
 	if (ptr == NULL)
