@@ -5,7 +5,7 @@
 /*Concert functions*/
 
 // The fucntion recieves a string in a form of an hour (for example : 20:30) and returns the string in a form of a float (in our example : 20.30) 
-// O(n) - n is hour_string len (always 5 HH:MM format). 
+// O(n) - n is hour_string len (always 5 HH:MM format).
 float getHourFromString(char* hour_string)
 {
 	int str_index = 0;
@@ -236,7 +236,7 @@ void printConcertDetails(Concert* concert, Musician** concert_musicians, int con
 {
 	if (concert_musicians_size != 0 && concert_musicians !=NULL)
 	{
-		printf("%s %d %d %d ", concert->name, concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
+		printf("\n%s %d %d %d ", concert->name, concert->date_of_concert.day, concert->date_of_concert.month, concert->date_of_concert.year);
 		printConcertHour(concert->date_of_concert.hour);
 		printMusicians(concert_musicians, concert_musicians_size, tr, concert);
 	}
