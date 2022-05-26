@@ -5,14 +5,15 @@
 #include "musician_header.h"
 
 /*Functions*/
+
+//Creates an array that each of his indexes contains an array of pointers to musicians that play a specifict instrument.
+//the instrument's ID is the same as the index. 
 Musician*** createMusiciansCollection(Musician** MusicianGroup, int size, int musician_count)
 {
 	Musician*** MusicianCollection = (Musician***)malloc(sizeof(Musician**) * size);
 	checkMemoryAllocation(MusicianCollection);
 	for (int instrument_index = 0; instrument_index < size; instrument_index++)
-	{
 		MusicianCollection[instrument_index] = getMusiciansByInstrument(MusicianGroup, musician_count, instrument_index);
-	}
 
 	return MusicianCollection;
 }
@@ -37,14 +38,17 @@ Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count
 		{
 			physical_size *= 2;
 			musicians = (Musician**)realloc(musicians, sizeof(Musician*) * physical_size);
+			checkMemoryAllocation(musicians);
 		}
 	}
 	musicians = (Musician**)realloc(musicians, sizeof(Musician*) * logical_size);
+	checkMemoryAllocation(musicians);
 	*count = logical_size;
 	fclose(file);
 	return musicians;
 }
 
+//Returns an array of pointers to musicians that play the instrument with the same insID.
 Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID)
 {
 	int playing_musicians = 0;
@@ -56,10 +60,12 @@ Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count
 			MusiciansByInstruments[playing_musicians++] = MusicianGroup[musician_pindex];
 	}
 	MusiciansByInstruments = (Musician**)realloc(MusiciansByInstruments, sizeof(Musician**) * (playing_musicians + 1));
+	checkMemoryAllocation(MusiciansByInstruments);
 	MusiciansByInstruments[playing_musicians] = NULL;
 	return MusiciansByInstruments;
 }
 
+//Returns true if the given musician plays the instrument with the corresponding instrument id. False otherwise.
 bool playsInstrument(Musician* musician, int insID)
 {
 	MPIListNode* curr = musician->instruments.head;
@@ -81,6 +87,7 @@ Musician* getMusician(char* line, InstrumentTree tree)
 	checkMemoryAllocation(musician);
 	MPIList instrument_list;
 	char* token, ** name = (char**)malloc(LINE_LENGTH * sizeof(char*)); //Given the maximum possible size for the array, will later realloc.
+	checkMemoryAllocation(name);
 	int InsID, name_index = 0;
 	createNewMPIList(&instrument_list);
 
@@ -204,12 +211,15 @@ void freeMPIList(MPIList instrument_list)
 	}
 }
 
+//Sorts the given musician pointer array by price, if importance is 1 then sorts higher->lower. Else lower->higher.
 void sortMusiciansByImportance(Musician** musicians, int instrument_id, char importance)
 {
 	int count = 0;
 	ConcertMusician* concert_musicians;
 	while (musicians[count] != NULL) {count++;
 	}
+	//We sort the concert musicians and put the sorted array back into musicians for comfort since concert musicians is a struct
+	//that contains the price for the required instrument.
 	concert_musicians = CreateConcertMusicians(musicians, instrument_id, count);
 	if (importance == '1')
 		qsort(concert_musicians, count, sizeof(ConcertMusician), compareYakar);
@@ -221,6 +231,7 @@ void sortMusiciansByImportance(Musician** musicians, int instrument_id, char imp
 	free(concert_musicians);
 }
 
+//Creates an array of concert musicians built from the given Musician pointer array
 ConcertMusician* CreateConcertMusicians(Musician** musicians, int instrument_id, int count)
 {
 	ConcertMusician* ret = (ConcertMusician*)malloc(sizeof(ConcertMusician) * count);
@@ -233,12 +244,14 @@ ConcertMusician* CreateConcertMusicians(Musician** musicians, int instrument_id,
 	return ret;
 }
 
+//Places the sorted Concert musician array into the musician pointer array.
 void placeSortedArr(ConcertMusician* concert_musicians, Musician** musicians, int count)
 {
 	for (int i = 0; i < count; i++)
 		musicians[i] = concert_musicians[i].musician;
 }
 
+//Retuns the price the musician charges for the specified instrument.
 float getInstrumentPrice(Musician* musician, int instrument_id)
 {
 	MPIListNode* node = musician->instruments.head;
@@ -248,6 +261,7 @@ float getInstrumentPrice(Musician* musician, int instrument_id)
 	return node->mpi_data.price;
 }
 
+//Compares between the prices of m1 and m2, returns positive int if m1's price is more expensive, else negative
 int compareZol(ConcertMusician* m1, ConcertMusician* m2)
 {
 	if (m1->price - m2->price > 0)
@@ -257,6 +271,7 @@ int compareZol(ConcertMusician* m1, ConcertMusician* m2)
 
 }
 
+//Compares between the prices of m1 and m2, returns positive int if m1's price is cheaper, else negative
 int compareYakar(ConcertMusician* m1, ConcertMusician* m2)
 {
 	if (m1->price - m2->price > 0)
@@ -264,19 +279,3 @@ int compareYakar(ConcertMusician* m1, ConcertMusician* m2)
 	else
 		return 1;
 }
-//void printMusicians(Musician** musicians,int size)
-//{
-//	MPIListNode *ins_list_curr;
-//	for (int i = 0; i < size; i++)
-//	{
-//		for (int j = 0; j < musicians[i]->name_length; j++)
-//			printf("%s ", musicians[i]->name[j]);
-//		ins_list_curr = musicians[i]->instruments.head;
-//
-//		while (ins_list_curr != NULL)
-//		{
-//			printf("%d %f\n", ins_list_curr->mpi_data.insId, ins_list_curr->mpi_data.price);
-//			ins_list_curr = ins_list_curr->next;
-//		}
-//	}
-//}

@@ -16,16 +16,18 @@ void main(int argc, char* argv[])
 	MusiciansCollection = createMusiciansCollection(MusiciansGroup, instrument_count, musician_count);
 
 	printWelcomeMessege();
-	Concert* Concert = GetConcert(instrument_tree);
-	while (Concert != NULL)
+	Concert* concert = GetConcert(instrument_tree);
+	while (concert != NULL)
 	{
-		ConcertMusicians = getMusiciansArrToConcert(Concert, MusiciansCollection, &concert_musicians_count);
+		ConcertMusicians = getMusiciansArrToConcert(concert, MusiciansCollection, &concert_musicians_count);
 		setAllMusiciansAvailable(MusiciansGroup, musician_count);
-		printConcertDetails(Concert, ConcertMusicians, concert_musicians_count, instrument_tree);
-		freeConcert(Concert);
-		Concert = GetConcert(instrument_tree);
+		printConcertDetails(concert, ConcertMusicians, concert_musicians_count, instrument_tree);
+		freeConcert(concert);
+		free(ConcertMusicians);
+		concert = GetConcert(instrument_tree);
 	}
-	freeMusicians(MusiciansGroup, musician_count);//void printMusicians(Musician** musicians,int size)
+	freeMusicians(MusiciansGroup, musician_count);
+	free(MusiciansCollection);
 	freeInstrumentTree(instrument_tree);
 	printGoodbyeMessage();
 

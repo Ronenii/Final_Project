@@ -5,7 +5,7 @@
 #include "instrument_header.h"
 
 /*Functions*/
-
+//Initializes a new NULLTree
 void createNewTree(InstrumentTree* tree)
 {
 	tree->root = NULL;
