@@ -48,14 +48,14 @@ Musician** GetMusiciansFromFile(char* file_name, InstrumentTree tree, int* count
 Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID)
 {
 	int playing_musicians = 0;
-	Musician** MusiciansByInstruments = (Musician**)malloc(sizeof(Musician*)*(musician_count));
+	Musician** MusiciansByInstruments = (Musician**)malloc(sizeof(Musician*) * (musician_count));
 	checkMemoryAllocation(MusiciansByInstruments);
 	for (int musician_pindex = 0; musician_pindex < musician_count; musician_pindex++)
 	{
 		if (playsInstrument(MusicianGroup[musician_pindex], insID))
 			MusiciansByInstruments[playing_musicians++] = MusicianGroup[musician_pindex];
 	}
-	MusiciansByInstruments = (Musician**)realloc(MusiciansByInstruments, sizeof(Musician**)*(playing_musicians+1));
+	MusiciansByInstruments = (Musician**)realloc(MusiciansByInstruments, sizeof(Musician**) * (playing_musicians + 1));
 	MusiciansByInstruments[playing_musicians] = NULL;
 	return MusiciansByInstruments;
 }
@@ -63,7 +63,7 @@ Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count
 bool playsInstrument(Musician* musician, int insID)
 {
 	MPIListNode* curr = musician->instruments.head;
-	
+
 	while (curr != NULL)
 	{
 		if (insID == curr->mpi_data.insId)
@@ -204,6 +204,66 @@ void freeMPIList(MPIList instrument_list)
 	}
 }
 
+void sortMusiciansByImportance(Musician** musicians, int instrument_id, char importance)
+{
+	int count = 0;
+	ConcertMusician* concert_musicians;
+	while (musicians[count] != NULL) {count++;
+	}
+	concert_musicians = CreateConcertMusicians(musicians, instrument_id, count);
+	if (importance == '1')
+		qsort(concert_musicians, count, sizeof(ConcertMusician), compareYakar);
+	else
+		qsort(concert_musicians, count, sizeof(ConcertMusician), compareZol);
+
+	placeSortedArr(concert_musicians, musicians, count);
+
+	free(concert_musicians);
+}
+
+ConcertMusician* CreateConcertMusicians(Musician** musicians, int instrument_id, int count)
+{
+	ConcertMusician* ret = (ConcertMusician*)malloc(sizeof(ConcertMusician) * count);
+	checkMemoryAllocation(ret);
+	for (int i = 0; i < count; i++)
+	{
+		ret[i].musician = musicians[i];
+		ret[i].price = getInstrumentPrice(musicians[i], instrument_id);
+	}
+	return ret;
+}
+
+void placeSortedArr(ConcertMusician* concert_musicians, Musician** musicians, int count)
+{
+	for (int i = 0; i < count; i++)
+		musicians[i] = concert_musicians[i].musician;
+}
+
+float getInstrumentPrice(Musician* musician, int instrument_id)
+{
+	MPIListNode* node = musician->instruments.head;
+	while (node->mpi_data.insId != instrument_id)
+		node = node->next;
+
+	return node->mpi_data.price;
+}
+
+int compareZol(ConcertMusician* m1, ConcertMusician* m2)
+{
+	if (m1->price - m2->price > 0)
+		return 1;
+	else
+		return -1;
+
+}
+
+int compareYakar(ConcertMusician* m1, ConcertMusician* m2)
+{
+	if (m1->price - m2->price > 0)
+		return -1;
+	else
+		return 1;
+}
 //void printMusicians(Musician** musicians,int size)
 //{
 //	MPIListNode *ins_list_curr;

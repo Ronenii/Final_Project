@@ -176,7 +176,10 @@ Musician** getMusiciansArrToConcert(Concert* concert, Musician*** musicians_coll
 		successful_input = 0;
 		for (int music_collection_ind = 0; music_collection_ind < curr_amount_of_instruments; music_collection_ind++)
 		{
-			Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst,&successful_input);
+		sortMusiciansByImportance(musicians_collection_arr[concert_inst_node->ci_data.inst], concert_inst_node->ci_data.inst, concert_inst_node->ci_data.importance);
+		Musician* concert_musician = getMusicianFromPointersArray(musicians_collection_arr, concert_inst_node->ci_data.inst,&successful_input);
+		
+
 			if (concert_musician != NULL && concert_musician->availability == true) // if musician is found and not used , add him to the array. 
 			{
 				if (log_size == physic_size)

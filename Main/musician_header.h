@@ -37,6 +37,12 @@ typedef struct
 	bool availability;
 }Musician;
 
+typedef struct
+{
+	float price;
+	Musician* musician;
+}ConcertMusician;
+
 /*Function refrences*/
 Musician*** createMusiciansCollection(Musician** MusicianGroup, int size, int musician_count);
 Musician** getMusiciansByInstrument(Musician** MusicianGroup, int musician_count, int insID);
@@ -52,6 +58,18 @@ void freeMusicians(Musician** musicians, int musicians_size);
 void freeMusician(Musician* musician);
 void freeName(char** name, int name_size);
 void freeMPIList(MPIList instrument_list);
+
+void sortMusiciansByImportance(Musician** musicians, int instrument_id, char importance);
+
+ConcertMusician* CreateConcertMusicians(Musician** musicians, int instrument_id, int count);
+
+void placeSortedArr(ConcertMusician* concert_musicians, Musician** musicians, int count);
+
+float getInstrumentPrice(Musician* musician, int instrument_id);
+
+int compareZol(ConcertMusician* m1, ConcertMusician* m2);
+
+int compareYakar(ConcertMusician* m1, ConcertMusician* m2);
 
 bool MPIListIsEmpty(MPIList* lst);
 bool playsInstrument(Musician* musician, int insID);
